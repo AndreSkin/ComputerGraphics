@@ -1,0 +1,8 @@
+﻿  ShaderMaker.cpp
+  Cubo.cpp
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(30,19): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(177,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(237,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(249,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+  Cubo.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\x64\Debug\Cubo.exe
