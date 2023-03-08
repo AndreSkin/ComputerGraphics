@@ -183,21 +183,21 @@ void mykeyboard(unsigned char key, int x, int y)
 	case 'q': case 'Q':
 		exit(EXIT_SUCCESS);
 		break;
-	case 'a': //move camera to the right
+	case 'd': //move camera to the right
 		vec3 dir = normalize(cross(cameraFront, cameraUp));
 		cameraPos = cameraPos - alfa * dir;
 		break;
 
-	case 'A': //move camera to the left 
+	case 'a': //move camera to the left 
 		vec3 direzione = normalize(cross(cameraFront, cameraUp));
 		cameraPos = cameraPos + alfa * direzione;
 		break;
 
-	case 's': // move camera away (same direction)
+	case 'w': // move camera away (same direction)
 		cameraPos = cameraPos - alfa * cameraFront;
 		break;
 
-	case 'S': // move camera close (same direction)
+	case 's': // move camera close (same direction)
 		cameraPos = cameraPos + alfa * cameraFront;
 		break;
 	case ' ':  // reset values to their defaults
