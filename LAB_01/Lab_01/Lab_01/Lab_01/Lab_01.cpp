@@ -33,7 +33,7 @@ unsigned int VBO_2;
 
 using namespace glm;
 
-#define MaxNumPts 300
+#define MaxNumPts 64
 float PointArray[MaxNumPts][2];
 float CurveArray[MaxNumPts][2];
 
@@ -148,14 +148,49 @@ void init(void)
 	glViewport(0, 0, 500, 500);
 }
 
+void de_casteljau( float t,float pointarr[])
+{
+	int pts = NumPts;
+	int grade = pts - 1;
+	float points[MaxNumPts];
+
+	int i = 0;
+	for (i = 0; i < MaxNumPts; i++)
+	{
+		points[i] = pointarr[i];
+	}
+	//TODO
+}
+
 void drawScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	if (NumPts > 1) {
+	if (NumPts > 1) 
+	{
 		// Draw curve
 		// TODO
+		float result[3];
+		for (int i = 0; i <= 100; i++)
+		{
+			de_casteljau((float)(i / 100), result);
+			CurveArray[i][0] = result[0];
+			CurveArray[i][1] = result[1];
 		}
+		// Draw control polygon
+		glBindVertexArray(VAO_2);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(CurveArray), &CurveArray[0], GL_STATIC_DRAW);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		// Draw the control points CP
+		glLineWidth(0.5);
+		glDrawArrays(GL_POINTS, 0, 101);
+		// Draw the line segments between CP
+		glLineWidth(2.0);
+		glDrawArrays(GL_LINE_STRIP, 0, 101);
+		glBindVertexArray(0);
+	}
 	// Draw control polygon
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -163,7 +198,7 @@ void drawScene(void)
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// Draw the control points CP
-	glPointSize(6.0);
+	glPointSize(8.0);
 	glDrawArrays(GL_POINTS, 0, NumPts);
 	// Draw the line segments between CP
 	glLineWidth(2.0);
