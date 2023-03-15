@@ -30,6 +30,9 @@ int		fov = 45;
 float	zNear = 0.01;
 float	zFar = 10000.0;
 
+int assi = 2;
+float sc[] = { 1.0,1.0,1.0 };
+
 static unsigned int programId, MatProj, MatModel, MatView;
 
 vec3 cameraPos = vec3(0.0, 0.0, 10.0);
@@ -72,30 +75,50 @@ color4 colors[8] = {
 	color4(0.0, 1.0, 1.0, 1.0)   // cyan
 };
 int Index = 0;  // global variable indexing into VBO arrays
-void polygon(int a, int b, int c, int d)
+void polygon(int a, int b, int c, int d, int g)
 {
-	vColors[Index] = colors[a]; vPositions[Index] = positions[a]; Index++;
-	vColors[Index] = colors[b]; vPositions[Index] = positions[b]; Index++;
-	vColors[Index] = colors[c]; vPositions[Index] = positions[c]; Index++;
-	vColors[Index] = colors[a]; vPositions[Index] = positions[a]; Index++;
-	vColors[Index] = colors[c]; vPositions[Index] = positions[c]; Index++;
-	vColors[Index] = colors[d]; vPositions[Index] = positions[d]; Index++;
+	////ABC
+	//vColors[Index] = colors[a]; vPositions[Index] = positions[a]; Index++;
+	//vColors[Index] = colors[b]; vPositions[Index] = positions[b]; Index++;
+	//vColors[Index] = colors[c]; vPositions[Index] = positions[c]; Index++;
+	////ACD
+	//vColors[Index] = colors[a]; vPositions[Index] = positions[a]; Index++;
+	//vColors[Index] = colors[c]; vPositions[Index] = positions[c]; Index++;
+	//vColors[Index] = colors[d]; vPositions[Index] = positions[d]; Index++;
+	
+	//ABC
+	vColors[Index] = colors[g]; vPositions[Index] = positions[a]; Index++;
+	vColors[Index] = colors[g]; vPositions[Index] = positions[b]; Index++;
+	vColors[Index] = colors[g]; vPositions[Index] = positions[c]; Index++;
+	//ACD
+	vColors[Index] = colors[g]; vPositions[Index] = positions[a]; Index++;
+	vColors[Index] = colors[g]; vPositions[Index] = positions[c]; Index++;
+	vColors[Index] = colors[g]; vPositions[Index] = positions[d]; Index++;
+
+	////ABC
+	//vColors[Index] = colors[0]; vPositions[Index] = positions[a]; Index++;
+	//vColors[Index] = colors[1]; vPositions[Index] = positions[b]; Index++;
+	//vColors[Index] = colors[2]; vPositions[Index] = positions[c]; Index++;
+	////ACD
+	//vColors[Index] = colors[3]; vPositions[Index] = positions[a]; Index++;
+	//vColors[Index] = colors[4]; vPositions[Index] = positions[c]; Index++;
+	//vColors[Index] = colors[6]; vPositions[Index] = positions[d]; Index++;
 }
 void colorcube()
 {
-	polygon(1, 0, 3, 2);
-	polygon(2, 3, 7, 6);
-	polygon(3, 0, 4, 7);
-	polygon(6, 5, 1, 2);
-	polygon(4, 5, 6, 7);
-	polygon(5, 4, 0, 1);
+	polygon(1, 0, 3, 2, 0);
+	polygon(2, 3, 7, 6, 1);
+	polygon(3, 0, 4, 7, 2);
+	polygon(6, 5, 1, 2, 3);
+	polygon(4, 5, 6, 7, 4);
+	polygon(5, 4, 0, 1, 6);
 }
 ///////////////////////////////////////////////////////////////////////////////////
 
 mat4 Projection, Model, View;
 
 vec3 cubePositions[] = {
- vec3(0.0f,   0.0f,  0.0f),
+ vec3(0.0f,   0.0f,  0.0f), //origine
  vec3(2.0f,   5.0f,-15.0f),
  vec3(-1.5f, -2.2f, -2.5f),
  vec3(-3.8f, -2.0f,-12.3f),
@@ -233,7 +256,7 @@ void specialKeyFunction(int key, int x, int y) {
 
 void drawScene(void)
 {
-	int i, n_cubi = 5;  // fino a 10 cubi
+	int i, n_cubi = 3;  // fino a 10 cubi
 	float timevalue = glutGet(GLUT_ELAPSED_TIME) * 0.0001;
 
 	//Passo al Vertex Shader il puntatore alla matrice Projection, che sarà associata alla variabile Uniform mat4 Projection
@@ -260,7 +283,10 @@ void drawScene(void)
 		Model = rotate(Model, radians(rotateX), glm::vec3(1.0f, 0.0f, 0.0f));
 		Model = rotate(Model, radians(rotateY), glm::vec3(0.0f, 1.0f, 0.0f));
 		Model = rotate(Model, radians(rotateZ), glm::vec3(0.0f, 0.0f, 1.0f));
-		Model = scale(Model, vec3(2.0f, 2.0f, 2.0f));
+		//Model = scale(Model, vec3(2.0f, 2.0f, 2.0f));
+
+		vec3 sfact(sc[0], sc[1], sc[2]);
+		Model = scale(Model, sfact);
 
 		//Passo al Vertex Shader il puntatore alla matrice Model, che sarà associata alla variabile Uniform mat4 Projection
 		//all'interno del Vertex shader. Uso l'identificatio MatModel
@@ -279,6 +305,20 @@ void update(int a)
 	glutPostRedisplay();
 }
 
+void mymouse(int btn, int state, int x, int y)
+{
+	if ((btn == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN)) assi = 0;
+	if ((btn == GLUT_MIDDLE_BUTTON) && (state == GLUT_DOWN)) assi = 1;
+	if ((btn == GLUT_RIGHT_BUTTON) && (state == GLUT_DOWN)) assi = 2;
+
+	sc[assi] *= 1.1;
+	if (sc[assi] > 15.0) sc[assi] = 1.0;
+
+	glutPostRedisplay();
+}
+
+
+
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
@@ -295,6 +335,7 @@ int main(int argc, char* argv[])
 	glutReshapeFunc(resize);
 
 	glutMouseWheelFunc(mousewheel);
+	glutMouseFunc(mymouse);
 	glutKeyboardFunc(mykeyboard);
 	glutSpecialFunc(specialKeyFunction);
 
