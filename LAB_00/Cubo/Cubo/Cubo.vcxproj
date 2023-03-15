@@ -127,8 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\3D_CUBE_TRANSMAT\ShaderMaker.cpp" />
     <ClCompile Include="Cubo.cpp" />
+    <ClCompile Include="ShaderMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
