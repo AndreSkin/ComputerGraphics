@@ -95,14 +95,6 @@ void polygon(int a, int b, int c, int d, int g)
 	vColors[Index] = colors[g]; vPositions[Index] = positions[c]; Index++;
 	vColors[Index] = colors[g]; vPositions[Index] = positions[d]; Index++;
 
-	////ABC
-	//vColors[Index] = colors[0]; vPositions[Index] = positions[a]; Index++;
-	//vColors[Index] = colors[1]; vPositions[Index] = positions[b]; Index++;
-	//vColors[Index] = colors[2]; vPositions[Index] = positions[c]; Index++;
-	////ACD
-	//vColors[Index] = colors[3]; vPositions[Index] = positions[a]; Index++;
-	//vColors[Index] = colors[4]; vPositions[Index] = positions[c]; Index++;
-	//vColors[Index] = colors[6]; vPositions[Index] = positions[d]; Index++;
 }
 void colorcube()
 {
@@ -256,7 +248,7 @@ void specialKeyFunction(int key, int x, int y) {
 
 void drawScene(void)
 {
-	int i, n_cubi = 3;  // fino a 10 cubi
+	int i, n_cubi = 1;  // fino a 10 cubi
 	float timevalue = glutGet(GLUT_ELAPSED_TIME) * 0.0001;
 
 	//Passo al Vertex Shader il puntatore alla matrice Projection, che sarà associata alla variabile Uniform mat4 Projection
