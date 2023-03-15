@@ -1,1 +1,12 @@
-﻿  Sierpinsky.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\x64\Debug\Sierpinsky.exe
+﻿  Sierpinsky.cpp
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\Sierpinsky\Sierpinsky.cpp(49,22): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\Sierpinsky\Sierpinsky.cpp(50,22): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\Sierpinsky\Sierpinsky.cpp(52,21): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\Sierpinsky\Sierpinsky.cpp(53,22): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\Sierpinsky\Sierpinsky.cpp(55,21): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\Sierpinsky\Sierpinsky.cpp(56,21): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\Sierpinsky\Sierpinsky.cpp(58,22): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\Sierpinsky\Sierpinsky.cpp(59,21): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\Sierpinsky\Sierpinsky.cpp(61,22): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\Sierpinsky\Sierpinsky.cpp(62,22): warning C4305: '=': truncation from 'double' to 'float'
+  Sierpinsky.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Sierpinsky\Sierpinsky\x64\Debug\Sierpinsky.exe
