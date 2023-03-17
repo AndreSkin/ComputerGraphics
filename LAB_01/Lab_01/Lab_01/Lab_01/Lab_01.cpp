@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Lab-01_students.c
  *
  *     This program draws straight lines connecting dots placed with mouse clicks.
@@ -33,9 +33,12 @@ unsigned int VBO_2;
 
 using namespace glm;
 
-#define MaxNumPts 64
+#define MaxNumPts 300
 float PointArray[MaxNumPts][2];
 float CurveArray[MaxNumPts][2];
+
+bool trascinamento = false;
+float tolleranza_trascinamento = 0.1;
 
 int NumPts = 0;
 
@@ -48,6 +51,68 @@ void addNewPoint(float x, float y);
 int main(int argc, char** argv);
 void removeFirstPoint();
 void removeLastPoint();
+void decasteljau(float t, float* result);
+void Point_is_dragged(int x, int y);
+void DragPoint(int x, int y);
+
+
+void decasteljau(float t, float* result)
+{
+	float array_bezier[MaxNumPts][MaxNumPts][2];
+	//Copio pointarray
+	for (int i = 0; i < NumPts; i++) {
+		array_bezier[0][i][0] = PointArray[i][0];
+		array_bezier[0][i][1] = PointArray[i][1];
+	}
+
+	//Applico l'algoritmo
+	for (int i = 1; i < NumPts; i++) {
+		for (int j = 0; j < NumPts -i; j++) {
+			array_bezier[i][j][0] = ((1 - t) * array_bezier[i - 1][j][0]) + (t * array_bezier[i - 1][j + 1][0]);
+			array_bezier[i][j][1] = ((1 - t) * array_bezier[i - 1][j][1]) + (t * array_bezier[i - 1][j + 1][1]);
+		}
+		
+	}
+	//Salvo i risultati
+	result[0] = array_bezier[NumPts - 1][0][0];
+	result[1] = array_bezier[NumPts - 1][0][1];
+}
+
+
+void Point_is_dragged(int x, int y) {
+
+	if (glutGetModifiers() == GLUT_LEFT_BUTTON) 
+	{
+		trascinamento = true;
+	}
+	else 
+	{
+		trascinamento = false;
+	}
+}
+
+void DragPoint(int x, int y) 
+{
+	if (trascinamento) 
+	{
+		float xPos = -1.0f + ((float)x) * 2 / ((float)(width));
+		float yPos = -1.0f + ((float)(height - y)) * 2 / ((float)(height));
+
+		for (int i = 0; i < NumPts; i++) 
+		{
+			//Se clicco abbastanza vicino al punto
+			if ((xPos - PointArray[i][0] < tolleranza_trascinamento && xPos - PointArray[i][0] >  -tolleranza_trascinamento) &&
+				(yPos - PointArray[i][1] < tolleranza_trascinamento && yPos - PointArray[i][1] >  -tolleranza_trascinamento))
+			{
+				//Sposta punto
+				PointArray[i][0] = xPos;
+				PointArray[i][1] = yPos;
+				glutPostRedisplay();
+				return;
+			}
+		}
+	}
+}
 
 
 void myKeyboardFunc(unsigned char key, int x, int y)
@@ -93,7 +158,20 @@ void myMouseFunc(int button, int state, int x, int y) {
 		float xPos = -1.0f + ((float)x) * 2 / ((float)(width));
 		float yPos = -1.0f + ((float)(height - y)) * 2 / ((float)(height));
 
-		addNewPoint(xPos, yPos);
+		bool punto_spostato = false;
+		//Sposto il punto
+		for (int i = 0; i < NumPts; i++) 
+		{
+			if ((xPos - PointArray[i][0] < tolleranza_trascinamento && xPos - PointArray[i][0] >  -tolleranza_trascinamento) && 
+				(yPos - PointArray[i][1] < tolleranza_trascinamento && yPos - PointArray[i][1] >  -tolleranza_trascinamento))
+			{
+				punto_spostato = true;
+			}
+		}
+		if (punto_spostato == false)
+		{
+			addNewPoint(xPos, yPos);
+		}
 		glutPostRedisplay();
 
 	}
@@ -148,47 +226,30 @@ void init(void)
 	glViewport(0, 0, 500, 500);
 }
 
-void de_casteljau( float t,float pointarr[])
-{
-	int pts = NumPts;
-	int grade = pts - 1;
-	float points[MaxNumPts];
-
-	int i = 0;
-	for (i = 0; i < MaxNumPts; i++)
-	{
-		points[i] = pointarr[i];
-	}
-	//TODO
-}
-
 void drawScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	if (NumPts > 1) 
-	{
+	if (NumPts > 1) {
+		//if (ADAPTIVE == false) {
+			float result[2];
+			for (int i = 0; i <= 100; i++) {
+				decasteljau((GLfloat)i / 100, result);
+				CurveArray[i][0] = result[0];
+				CurveArray[i][1] = result[1];
+			}
+	    //}
 		// Draw curve
 		// TODO
-		float result[3];
-		for (int i = 0; i <= 100; i++)
-		{
-			de_casteljau((float)(i / 100), result);
-			CurveArray[i][0] = result[0];
-			CurveArray[i][1] = result[1];
-		}
-		// Draw control polygon
+
 		glBindVertexArray(VAO_2);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(CurveArray), &CurveArray[0], GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
-		// Draw the control points CP
-		glLineWidth(0.5);
-		glDrawArrays(GL_POINTS, 0, 101);
-		// Draw the line segments between CP
-		glLineWidth(2.0);
-		glDrawArrays(GL_LINE_STRIP, 0, 101);
+		glLineWidth(1.0);
+		glDrawArrays(GL_LINE_STRIP, 0, 100);
+
 		glBindVertexArray(0);
 	}
 	// Draw control polygon
@@ -198,12 +259,16 @@ void drawScene(void)
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// Draw the control points CP
-	glPointSize(8.0);
+	glPointSize(6.0);
 	glDrawArrays(GL_POINTS, 0, NumPts);
 	// Draw the line segments between CP
 	glLineWidth(2.0);
 	glDrawArrays(GL_LINE_STRIP, 0, NumPts);
+
+
+
 	glBindVertexArray(0);
+
 	glutSwapBuffers();
 }
 
@@ -224,6 +289,10 @@ int main(int argc, char** argv)
 	glutReshapeFunc(resizeWindow);
 	glutKeyboardFunc(myKeyboardFunc);
 	glutMouseFunc(myMouseFunc);
+
+	//Controllo trascinamento punti
+	glutMotionFunc(DragPoint);
+	glutPassiveMotionFunc(Point_is_dragged);
 
 	glewExperimental = GL_TRUE;
 	glewInit();
