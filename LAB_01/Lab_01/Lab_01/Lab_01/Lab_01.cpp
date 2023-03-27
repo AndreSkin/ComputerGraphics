@@ -123,7 +123,6 @@ void catmull_rom(float t, float* result_2, int y)
 
 	}
 
-
 	catmull_rom_points[y * 2][0] = CurveArray_catmull_rom[0][1][0];
 	catmull_rom_points[y * 2][1] = CurveArray_catmull_rom[0][1][1];
 	catmull_rom_points[(y * 2) + 1][0] = CurveArray_catmull_rom[0][2][0];
@@ -155,8 +154,7 @@ void DragPoint(int x, int y)
 		for (int i = 0; i < NumPts; i++) 
 		{
 			//Se clicco abbastanza vicino al punto
-			if ((xPos - PointArray[i][0] < tolleranza_trascinamento && xPos - PointArray[i][0] >  -tolleranza_trascinamento) &&
-				(yPos - PointArray[i][1] < tolleranza_trascinamento && yPos - PointArray[i][1] >  -tolleranza_trascinamento))
+			if ((abs(xPos - PointArray[i][0]) < tolleranza_trascinamento) && (abs(yPos - PointArray[i][1]) < tolleranza_trascinamento))
 			{
 				//Sposta punto
 				PointArray[i][0] = xPos;
