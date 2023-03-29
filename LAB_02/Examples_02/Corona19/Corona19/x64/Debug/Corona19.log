@@ -1,0 +1,29 @@
+﻿  Corona19.cpp
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(57,12): warning C4244: 'inizializzazione': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(58,12): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(99,18): warning C4244: 'inizializzazione': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(159,10): warning C4244: '+=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(168,10): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(173,33): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(174,58): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(224,31): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(261,14): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(266,24): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(267,24): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(270,28): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(271,28): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(285,18): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(288,14): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(292,24): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(293,24): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(295,28): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(296,28): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(312,100): warning C4305: 'argomento': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(307,15): warning C4101: 'v_Oblo': variabile locale senza riferimenti
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(363,81): warning C4305: 'argomento': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(367,80): warning C4305: 'argomento': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(412,33): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\Corona19\Corona19.cpp(412,26): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+  ShaderMaker.cpp
+  Generazione del codice in corso...
+  Corona19.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\Corona19\x64\Debug\Corona19.exe

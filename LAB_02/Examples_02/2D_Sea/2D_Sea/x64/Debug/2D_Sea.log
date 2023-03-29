@@ -1,0 +1,26 @@
+﻿  2D_Sea.cpp
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(45,10): warning C4244: 'inizializzazione': conversione da 'double' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(45,37): warning C4244: 'inizializzazione': conversione da 'double' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(125,35): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(144,33): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(154,14): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(163,24): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(198,31): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(204,14): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(224,31): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(270,31): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(276,14): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(293,31): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(330,31): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(400,50): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(419,2): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(525,17): warning C4305: '+=': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(528,17): warning C4305: '-=': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(532,17): warning C4305: '+=': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(546,14): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(547,14): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(560,25): warning C4244: 'argomento': conversione da 'float' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\2D_Sea\2D_Sea.cpp(566,22): warning C4244: 'argomento': conversione da 'float' a 'GLsizei'. Possibile perdita di dati.
+  ShaderMaker.cpp
+  Generazione del codice in corso...
+  2D_Sea.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_Sea\x64\Debug\2D_Sea.exe

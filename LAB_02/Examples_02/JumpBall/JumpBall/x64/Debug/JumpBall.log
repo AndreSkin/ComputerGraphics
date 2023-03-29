@@ -1,0 +1,20 @@
+﻿  JumpBall.cpp
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(53,12): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(128,10): warning C4244: '+=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(144,30): warning C4244: '+=': conversione da 'float' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(175,14): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(181,24): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(182,24): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(185,28): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(186,28): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(208,68): warning C4305: 'argomento': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(276,18): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(315,49): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(315,35): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(315,28): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(331,38): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(331,24): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\JumpBall\JumpBall.cpp(456,21): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+  ShaderMaker.cpp
+  Generazione del codice in corso...
+  JumpBall.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\JumpBall\x64\Debug\JumpBall.exe
