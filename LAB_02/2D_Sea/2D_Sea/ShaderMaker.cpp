@@ -47,7 +47,7 @@ GLuint ShaderMaker::createProgram(char* vertexfilename, char *fragmentfilename)
 	glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &success);
 	if (!success) {
 		glGetShaderInfoLog(vertexShaderId, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED 50\n" << infoLog << std::endl;
 	}
 
 
@@ -67,7 +67,7 @@ GLuint ShaderMaker::createProgram(char* vertexfilename, char *fragmentfilename)
 	glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &success);
 	if (!success) {
 		glGetShaderInfoLog(fragmentShaderId, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED 70\n" << infoLog << std::endl;
 	}
 
 	ErrorCheckValue = glGetError();
