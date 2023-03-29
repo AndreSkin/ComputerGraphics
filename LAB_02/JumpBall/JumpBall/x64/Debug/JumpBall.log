@@ -1,0 +1,20 @@
+﻿  JumpBall.cpp
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(53,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(128,10): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(144,30): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(175,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(181,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(182,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(185,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(186,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(208,68): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(276,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(315,49): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(315,35): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(315,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(331,38): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(331,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\JumpBall\JumpBall.cpp(456,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  ShaderMaker.cpp
+  Generating Code...
+  JumpBall.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\JumpBall\x64\Debug\JumpBall.exe
