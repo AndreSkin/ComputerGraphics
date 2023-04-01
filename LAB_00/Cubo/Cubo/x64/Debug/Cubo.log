@@ -1,7 +1,9 @@
 ﻿  Cubo.cpp
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(30,19): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(192,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(252,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(264,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(306,17): warning C4305: '*=': truncation from 'double' to 'float'
-  Cubo.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_00\Cubo\x64\Debug\Cubo.exe
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(30,19): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(192,13): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(252,18): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(264,21): warning C4244: 'inizializzazione': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_00\Cubo\Cubo\Cubo.cpp(306,17): warning C4305: '*=': troncamento da 'double' a 'float'
+  ShaderMaker.cpp
+  Generazione del codice in corso...
+  Cubo.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_00\Cubo\x64\Debug\Cubo.exe

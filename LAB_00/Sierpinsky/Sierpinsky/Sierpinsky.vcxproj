@@ -127,14 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\References_00\2D_SIERPINSKY\ShaderMaker.cpp" />
+    <ClCompile Include="ShaderMaker.cpp" />
     <ClCompile Include="Sierpinsky.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\References_00\2D_SIERPINSKY\ShaderMaker.h" />
+    <ClInclude Include="ShaderMaker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
