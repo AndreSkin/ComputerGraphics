@@ -42,7 +42,7 @@ bool paused = false; // Indica se il gioco è in pausa
 
 Triangle triangles[MAX_TRIANGLES]; // Array di triangoli
 int numTriangles = 0; // Numero di triangoli attualmente in gioco
-const float triangleXVelocity = 0.5; // Velocità orizzontale dei triangoli
+const float triangleXVelocity = 0.2; // Velocità orizzontale dei triangoli
 const int minTriangleSize = 15; // Dimensione minima dei triangolo
 
 float squareX = WINDOW_SIZE / 2; // Coordinata x del quadrato
@@ -72,7 +72,8 @@ void drawSfondo()
             glVertex2f(WINDOW_SIZE / 2 + radius * cos(i * PI / 180), WINDOW_SIZE / 2 - yOffset + radius * sin(i * PI / 180));
         }
         glEnd();
-        radius -= 20; // Riduce il raggio del cerchio successivo
+
+        radius -= 15; // Riduce il raggio del cerchio successivo
         modifier -= 0.035; // Riduce il modificatore di colore del cerchio successivo
         yOffset += 10; // Aumenta l'offset y del cerchio successivo
 
@@ -292,7 +293,7 @@ void update_scene(int value)
                 if (triangles[i].y < -TRIANGLE_SIZE / 2)
                 { // Se il triangolo esce dal bordo inferiore della finestra di gioco
                     score += 5; // Incrementa il punteggio del giocatore
-                    triangles[i] = restoreTriangle(triangles[i]);
+                    triangles[i] = restoreTriangle(triangles[i]); // Ricrea un triangolo
                 }
 
                 // Se il triangolo collide con il quadrato
