@@ -5,8 +5,9 @@
 #include <iostream>
 #include <string>
 
-#define MAX_TRIANGLES 10 // Numero massimo di triangoli
+#define MAX_TRIANGLES 8 // Numero massimo di triangoli
 #define TRIANGLE_SIZE 60 // Dimensione massima triangoli
+#define MAX_PARTICLES 50 //Numero massimo particelle
 #define SQUARE_SIZE 30 // Dimensione del quadrato
 #define WINDOW_SIZE 400 // Dimensioni della finestra
 #define PI 3.14159265358979323846
@@ -14,12 +15,22 @@
 using namespace std;
 
 // Struct per definire i triangoli
-typedef struct {
+typedef struct 
+{
     float x;
     float y;
     float size;
     float xVelocity;
+    float yVelocity;
 } Triangle;
+
+typedef struct 
+{
+    float x;
+    float y;
+    float xVelocity;
+    float yVelocity;
+} Particle;
 
 // Definizione delle variabili globali
 bool debug = false; // Attiva debug mode (mostra bordi rossi)
@@ -39,6 +50,52 @@ int score = 0; // Punteggio del giocatore
 float yVelocity = 1; // Valore del timer
 const int recall_timer = 15; //Ogni quanto aggiornare lo stato
 
+Particle particles[MAX_PARTICLES];
+
+void initParticles()
+{
+    for (int i = 0; i < MAX_PARTICLES; i++)
+    {
+        particles[i].x = rand() % WINDOW_SIZE; // Imposta la coordinata x della particella in modo casuale
+        particles[i].y = WINDOW_SIZE-1; // Imposta la coordinata y della particella all'inizio della finestra di gioco
+        particles[i].xVelocity = 0.1; // Imposta la velocità orizzontale della particella
+        particles[i].yVelocity = rand() % 5 + 3; // Imposta la velocità verticale della particella in modo casuale
+    }
+}
+
+void drawParticles()
+{
+    // Marrone scuro HEX #634B47 RGB(99,75,71)
+    glColor4f(0.39, 0.29, 0.28, 1.0);
+    glPointSize(5.0); // Imposta la dimensione delle particelle
+
+    glBegin(GL_POINTS); // Inizia a disegnare le particelle
+
+    for (int i = 0; i < MAX_PARTICLES; i++)
+    {
+        glVertex2f(particles[i].x, particles[i].y); // Disegna la particella
+    }
+
+    glEnd();
+}
+
+void updateParticles()
+{
+    for (int i = 0; i < MAX_PARTICLES; i++)
+    {
+        particles[i].x += particles[i].xVelocity; // Aggiorna la posizione orizzontale della particella
+        particles[i].y -= particles[i].yVelocity; // Aggiorna la posizione verticale della particella
+
+        if (particles[i].y < 1) // Se la particella è uscita dalla finestra di gioco
+        {
+            particles[i].x = rand() % WINDOW_SIZE; // Imposta la coordinata x della particella in modo casuale
+            particles[i].y = WINDOW_SIZE-1; // Imposta la coordinata y della particella all'inizio della finestra di gioco
+            particles[i].xVelocity = 0.1; // Imposta la velocità orizzontale della particella
+            particles[i].yVelocity = rand() % 5 + 3; // Imposta la velocità verticale della particella in modo casuale
+        }
+    }
+}
+
 // Funzione per inizializzare i triangoli
 void initTriangles() 
 {
@@ -48,7 +105,8 @@ void initTriangles()
         triangles[i].x = rand() % (WINDOW_SIZE - TRIANGLE_SIZE) + TRIANGLE_SIZE / 2; // Imposta la coordinata x del triangolo in modo casuale
         triangles[i].y = WINDOW_SIZE + TRIANGLE_SIZE / 2; // Imposta la coordinata y del triangolo al di sopra della finestra di gioco
         triangles[i].size = rand() % TRIANGLE_SIZE + minTriangleSize; // Imposta la dimensione del triangolo in modo casuale
-        triangles[i].xVelocity = rand()%2 == 0? triangleXVelocity: -1*triangleXVelocity; // Imposta la velocità orizzontale del triangolo
+        triangles[i].xVelocity = rand() % 2 == 0 ? triangleXVelocity : -1 * triangleXVelocity; // Imposta la velocità orizzontale del triangolo
+        triangles[i].yVelocity = rand() % 5;
     }
 }
 
@@ -110,11 +168,20 @@ void drawSquare()
 // Funzione per disegnare un triangolo sullo schermo
 void drawTriangle(Triangle t) 
 {
-    glColor4f(0.73, 0.62, 0.5, 1.0); // Imposta il colore del triangolo a marrone chiaro (HEX #BC9E82 ; RGB(188,158,130))
     glBegin(GL_TRIANGLES); // Inizia a disegnare un triangolo
+
+    // Imposta il colore del primo vertice a marrone chiaro (HEX #A18d6f ; RGB(161,141,111)
+    glColor4f(0.63, 0.55, 0.44, 1.0);
     glVertex2f(t.x, t.y - t.size / 2); // Imposta il primo vertice del triangolo in basso al centro
-    glVertex2f(t.x - t.size / 2, t.y + t.size / 2); // Imposta il secondo vertice del triangolo in alto a sinistra
-    glVertex2f(t.x + t.size / 2, t.y + t.size / 2); // Imposta il terzo vertice del triangolo in alto a destra
+
+    // Marrone più scuro HEX #836357; RGB(131,99,87)
+    glColor4f(0.51, 0.39, 0.34, 1.0);
+    glVertex2f(t.x - t.size / 3, t.y + t.size / 2); // Imposta il secondo vertice del triangolo in alto a sinistra
+
+    // Marrone più scuro HEX #634B47 RGB(99,75,71)
+    glColor4f(0.39, 0.29, 0.28, 1.0);
+    glVertex2f(t.x + t.size / 3, t.y + t.size / 2); // Imposta il terzo vertice del triangolo in alto a destra
+
     glEnd();
 
     if (showHitbox) 
@@ -133,8 +200,8 @@ void drawTriangle(Triangle t)
         glColor3f(1.0, 0.0, 0.0); // Imposta il colore del contorno a rosso
         glBegin(GL_LINE_LOOP); // Inizia a disegnare una linea chiusa
         glVertex2f(t.x, t.y - t.size / 2); // Imposta il primo vertice del contorno in basso al centro
-        glVertex2f(t.x - t.size / 2, t.y + t.size / 2); // Imposta il secondo vertice del contorno in alto a sinistra
-        glVertex2f(t.x + t.size / 2, t.y + t.size / 2); // Imposta il terzo vertice del contorno in alto a destra
+        glVertex2f(t.x - t.size / 3, t.y + t.size / 2); // Imposta il secondo vertice del contorno in alto a sinistra
+        glVertex2f(t.x + t.size / 3, t.y + t.size / 2); // Imposta il terzo vertice del contorno in alto a destra
         glEnd();
     }
 }
@@ -156,9 +223,9 @@ void display()
             glVertex2f(WINDOW_SIZE / 2 + radius * cos(i * PI / 180), WINDOW_SIZE / 2 - yOffset + radius * sin(i * PI / 180));
         }
         glEnd();
-        radius -= 10; // Riduce il raggio del cerchio successivo
-        modifier -= 0.025; // Riduce il modificatore di colore del cerchio successivo
-        yOffset += 5; // Aumenta l'offset y del cerchio successivo
+        radius -= 20; // Riduce il raggio del cerchio successivo
+        modifier -= 0.035; // Riduce il modificatore di colore del cerchio successivo
+        yOffset += 10; // Aumenta l'offset y del cerchio successivo
 
         if (debug)
         { // Se sono in debug mode
@@ -176,6 +243,7 @@ void display()
     { // Se il gioco non è terminato
         drawScore(); // Disegna il punteggio sullo schermo
         drawSquare(); // Disegna il quadrato e la piattaforma sullo schermo
+        drawParticles();
         for (int i = 0; i < numTriangles; i++) 
         { // Per ogni triangolo in gioco
             drawTriangle(triangles[i]); // Disegna il triangolo sullo schermo
@@ -191,10 +259,10 @@ void update_scene(int value)
     if (!gameOver) { // Se il gioco non è terminato
         for (int i = 0; i < numTriangles; i++) 
         { // Per ogni triangolo in gioco
-            triangles[i].y -= value; // Aggiorna la coordinata y del triangolo
+            triangles[i].y -= (value + triangles[i].yVelocity); // Aggiorna la coordinata y del triangolo
             triangles[i].x += triangles[i].xVelocity; // Aggiorna la coordinata x del triangolo
 
-            if (triangles[i].x < TRIANGLE_SIZE / 2 || triangles[i].x > WINDOW_SIZE - TRIANGLE_SIZE / 2) 
+            if (triangles[i].x - triangles[i].size / 3 < 0 || triangles[i].x + triangles[i].size / 3 > WINDOW_SIZE)
             { // Se il triangolo tocca il bordo destro o sinistro della finestra di gioco
                 triangles[i].xVelocity = -triangles[i].xVelocity; // Inverti la velocità orizzontale del triangolo
             }
@@ -206,6 +274,7 @@ void update_scene(int value)
                 triangles[i].y = WINDOW_SIZE + TRIANGLE_SIZE / 2; // Imposta la coordinata y del triangolo al di sopra della finestra di gioco
                 triangles[i].size = rand() % TRIANGLE_SIZE + minTriangleSize; // Imposta la dimensione del triangolo in modo casuale
                 triangles[i].xVelocity = rand() % 2 == 0 ? triangleXVelocity : -1 * triangleXVelocity; // Imposta la velocità orizzontale del triangolo
+                triangles[i].yVelocity = rand() % 5;
             }
             // Se il triangolo collide con il quadrato
             if (triangles[i].x > squareX - SQUARE_SIZE / 2 && triangles[i].x < squareX + SQUARE_SIZE / 2 && triangles[i].y > squareY - SQUARE_SIZE / 2 && triangles[i].y < squareY + SQUARE_SIZE / 2)
@@ -220,7 +289,7 @@ void update_scene(int value)
         cout << "Punteggio finale: " << score << endl; // Stampa il punteggio finale sul terminale
         exit(0); // Termina l'esecuzione del programma
     }
-
+    updateParticles();
     glutPostRedisplay(); // Richiede un aggiornamento della finestra di gioco
     glutTimerFunc(recall_timer, update_scene, yVelocity); // Richiama la funzione timer dopo un intervallo di tempo specificato
 }
@@ -298,6 +367,7 @@ int main(int argc, char** argv)
     squareY = platform_y + SQUARE_SIZE/2 - 10; // Imposta la coordinata y iniziale del quadrato al di sopra della piattaforma
     numTriangles = MAX_TRIANGLES;
     initTriangles(); // Inizializza i triangoli
+    initParticles(); // Inizializza le particelle
 
     glutDisplayFunc(display); 
     glutKeyboardFunc(keyboard);
