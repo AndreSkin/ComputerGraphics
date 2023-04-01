@@ -155,6 +155,32 @@ Triangle restoreTriangle(Triangle t)
     return t;
 }
 
+void updateTriangles(int value)
+{
+    for (int i = 0; i < numTriangles; i++)
+    { // Per ogni triangolo in gioco
+        triangles[i].y -= (value + triangles[i].yVelocity); // Aggiorna la coordinata y del triangolo
+        triangles[i].x += triangles[i].xVelocity; // Aggiorna la coordinata x del triangolo
+
+        if ((triangles[i].x - triangles[i].size / 3 < 0) || (triangles[i].x + triangles[i].size / 3 > WINDOW_SIZE))
+        { // Se il triangolo tocca il bordo destro o sinistro della finestra di gioco
+            triangles[i].xVelocity = -triangles[i].xVelocity; // Inverti la velocità orizzontale del triangolo
+        }
+
+        if (triangles[i].y < -1*TRIANGLE_SIZE / 2)
+        { // Se il triangolo esce dal bordo inferiore della finestra di gioco
+            score += 5; // Incrementa il punteggio del giocatore
+            triangles[i] = restoreTriangle(triangles[i]); // Ricrea un triangolo
+        }
+
+        // Se il triangolo collide con il quadrato
+        if ((triangles[i].x > squareX - SQUARE_SIZE / 2) && (triangles[i].x < squareX + SQUARE_SIZE / 2) && (triangles[i].y > squareY - SQUARE_SIZE / 2) && (triangles[i].y < squareY + SQUARE_SIZE / 2))
+        {
+            gameOver = true; // Termina il gioco
+        }
+    }
+}
+
 // Funzione per disegnare il quadrato e la piattaforma sullo schermo
 void drawSquare()
 {
@@ -280,28 +306,7 @@ void update_scene(int value)
     {
         if (!gameOver) 
         { // Se il gioco non è terminato
-            for (int i = 0; i < numTriangles; i++)
-            { // Per ogni triangolo in gioco
-                triangles[i].y -= (value + triangles[i].yVelocity); // Aggiorna la coordinata y del triangolo
-                triangles[i].x += triangles[i].xVelocity; // Aggiorna la coordinata x del triangolo
-
-                if (triangles[i].x - triangles[i].size / 3 < 0 || triangles[i].x + triangles[i].size / 3 > WINDOW_SIZE)
-                { // Se il triangolo tocca il bordo destro o sinistro della finestra di gioco
-                    triangles[i].xVelocity = -triangles[i].xVelocity; // Inverti la velocità orizzontale del triangolo
-                }
-
-                if (triangles[i].y < -TRIANGLE_SIZE / 2)
-                { // Se il triangolo esce dal bordo inferiore della finestra di gioco
-                    score += 5; // Incrementa il punteggio del giocatore
-                    triangles[i] = restoreTriangle(triangles[i]); // Ricrea un triangolo
-                }
-
-                // Se il triangolo collide con il quadrato
-                if (triangles[i].x > squareX - SQUARE_SIZE / 2 && triangles[i].x < squareX + SQUARE_SIZE / 2 && triangles[i].y > squareY - SQUARE_SIZE / 2 && triangles[i].y < squareY + SQUARE_SIZE / 2)
-                {
-                    gameOver = true; // Termina il gioco
-                }
-            }
+            updateTriangles(value);
             dropVelocity += 0.001; // Incrementa il valore di dropVelocity (i triangoli scendono più velocemente)
             if (score >= winScore)
             {
