@@ -1,13 +1,1 @@
-﻿  2D_PS.cpp
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(60,24): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(100,16): warning C4305: '=': troncamento da 'double' a 'float'
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(101,43): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(102,43): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(122,32): warning C4305: '-=': troncamento da 'double' a 'float'
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(168,18): warning C4477: 'fprintf': con la stringa di formato '%i' è necessario un argomento di tipo 'int', ma il tipo dell'argomento variadic 1 è 'unsigned __int64'
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(168,18): message : provare a usare '%zi' nella stringa di formato
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(203,28): warning C4244: 'argomento': conversione da 'float' a 'int'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(203,21): warning C4244: 'argomento': conversione da 'float' a 'int'. Possibile perdita di dati.
-  ShaderMaker.cpp
-  Generazione del codice in corso...
-  2D_PS.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\x64\Debug\2D_PS.exe
+﻿  2D_PS.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\x64\Debug\2D_PS.exe
