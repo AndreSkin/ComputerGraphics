@@ -1,21 +1,21 @@
 ﻿  Lab_03.cpp
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(509,31): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(562,61): warning C4244: 'argument': conversion from 'clock_t' to 'GLfloat', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(562,35): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(571,64): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(589,12): warning C4244: 'initializing': conversion from 'GLfloat' to 'int', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(707,47): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(707,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(708,57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(708,39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(716,15): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(766,74): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(834,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(835,19): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(510,31): warning C4305: 'argomento': troncamento da 'double' a 'GLclampf'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(563,61): warning C4244: 'argomento': conversione da 'clock_t' a 'GLfloat'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(563,35): warning C4244: 'argomento': conversione da 'GLfloat' a 'GLint'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(572,64): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(590,12): warning C4244: 'inizializzazione': conversione da 'GLfloat' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(708,47): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(708,44): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(709,57): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(709,39): warning C4244: 'argomento': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(717,15): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(767,74): warning C4267: '=': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(835,35): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(836,19): warning C4244: '=': conversione da 'double' a 'T'. Possibile perdita di dati.
           with
           [
               T=float
           ]
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(1044,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(1053,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  Lab_03.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab_03\x64\Debug\Lab_03.exe
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(1045,57): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\Lab_03\Lab_03.cpp(1054,57): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+  Lab_03.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab_03\x64\Debug\Lab_03.exe

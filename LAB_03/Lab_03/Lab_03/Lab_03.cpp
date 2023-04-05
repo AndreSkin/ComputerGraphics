@@ -124,7 +124,8 @@ glm::vec3 red_plastic_ambient = { 0.1, 0.0, 0.0 }, red_plastic_diffuse = { 0.6, 
 glm::vec3 brass_ambient = { 0.1, 0.06, 0.015 }, brass_diffuse = { 0.78, 0.57, 0.11 }, brass_specular = { 0.99, 0.91, 0.81 }; GLfloat brass_shininess = 27.8f;
 glm::vec3 emerald_ambient = { 0.0215, 0.04745, 0.0215 }, emerald_diffuse = { 0.07568, 0.61424, 0.07568 }, emerald_specular = { 0.633, 0.727811, 0.633 }; GLfloat emerald_shininess = 78.8f;
 glm::vec3 slate_ambient = { 0.02, 0.02, 0.02 }, slate_diffuse = { 0.1, 0.1, 0.1 }, slate_specular{ 0.4, 0.4, 0.4 }; GLfloat slate_shininess = 1.78125f;
-glm::vec3 my_material_ambient = { 0.3,0,0 }, my_material_diffuse = { 0.83, 0.4, 0.62 }, my_material_specular{ 0.3, 0.3, 0.3}; GLfloat my_material_shininess = 0.1f;
+// Bronzo
+glm::vec3 my_material_ambient = { 0.21, 0.12, 0.054 },my_material_diffuse = { 0.71, 0.42, 0.18 },my_material_specular = { 1,1,1 };GLfloat my_material_shininess = 25.5f;
 
 typedef struct {
 	glm::vec3 position;
@@ -455,7 +456,7 @@ void init() { // Set luce, oggetti, matereiali ecc
 	materials[MaterialType::SLATE].specular = slate_specular;
 	materials[MaterialType::SLATE].shininess = slate_shininess;
 
-	materials[MaterialType::MY_MATERIAL].name = "my_material";
+	materials[MaterialType::MY_MATERIAL].name = "My_material";
 	materials[MaterialType::MY_MATERIAL].ambient = my_material_ambient;
 	materials[MaterialType::MY_MATERIAL].diffuse = my_material_diffuse;
 	materials[MaterialType::MY_MATERIAL].specular = my_material_specular;
