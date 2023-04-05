@@ -15,7 +15,7 @@
 
 using namespace std;
 
-// Struct per definire i triangoli
+// Triangoli
 typedef struct 
 {
     float x;
@@ -25,7 +25,7 @@ typedef struct
     float yVelocity;
 } Triangle;
 
-// Struct per definire le particelle
+// Particelle
 typedef struct 
 {
     float x;
@@ -34,13 +34,12 @@ typedef struct
     float yVelocity;
 } Particle;
 
-// Definizione delle variabili globali
 bool debug = false; // Attiva debug mode (mostra bordi rossi)
 bool showHitbox = false; // Indica se mostrare la hitbox dei triangoli e del quadrato
 bool gameOver = false; // Indica se il gioco è terminato
 bool paused = false; // Indica se il gioco è in pausa
 
-Triangle triangles[MAX_TRIANGLES]; // Array di triangoli
+Triangle triangles[MAX_TRIANGLES];
 int numTriangles = 0; // Numero di triangoli attualmente in gioco
 const float triangleXVelocity = 0.2; // Velocità orizzontale dei triangoli
 const int minTriangleSize = 15; // Dimensione minima dei triangolo
@@ -54,7 +53,7 @@ float dropVelocity = 1; // Velocità di caduta base dei triangoli
 const int recall_timer = 15; //Ogni quanto aggiornare lo stato
 const int winScore = 500; // Punti per vincere
 
-Particle particles[MAX_PARTICLES]; // Array di particelle
+Particle particles[MAX_PARTICLES];
 
 //Prototipi
 void drawSfondo();
@@ -77,11 +76,14 @@ void drawSfondo()
     float radius = WINDOW_SIZE; // Imposta il raggio iniziale del cerchio più grande
     float modifier = 1.0; // Imposta il modificatore di colore iniziale
     float yOffset = 0; // Imposta l'offset y iniziale
-    while (radius > 0) // Finché il raggio è maggiore di zero
+    while (radius > 0)
     {
-        glColor4f(0.5 * modifier, 0.33 * modifier, 0.16 * modifier, 1.0); // Imposta il colore del cerchio (HEX #7E5429 ; RGB(126, 84, 41))
-        glBegin(GL_TRIANGLE_FAN); // Inizia a disegnare un cerchio
-        glVertex2f(WINDOW_SIZE / 2, WINDOW_SIZE / 2 - yOffset); // Imposta il centro del cerchio al centro della finestra di gioco e all'offset y corrente
+        // Imposta il colore del cerchio (HEX #7E5429 ; RGB(126, 84, 41))
+        glColor4f(0.5 * modifier, 0.33 * modifier, 0.16 * modifier, 1.0); 
+
+        glBegin(GL_TRIANGLE_FAN);
+        // Imposta il centro del cerchio al centro della finestra di gioco e all'offset y corrente
+        glVertex2f(WINDOW_SIZE / 2, WINDOW_SIZE / 2 - yOffset); 
         for (int i = 0; i <= 360; i++)
         { // Per ogni grado da 0 a 360 aggiunge un vertice al cerchio
             glVertex2f(WINDOW_SIZE / 2 + radius * cos(i * PI / 180), WINDOW_SIZE / 2 - yOffset + radius * sin(i * PI / 180));
@@ -95,9 +97,9 @@ void drawSfondo()
         if (debug)
         { // Se sono in debug mode
             glColor3f(1.0, 0.0, 0.0); // Imposta il colore del contorno a rosso
-            glBegin(GL_LINE_LOOP); // Inizia a disegnare una linea chiusa
+            glBegin(GL_LINE_LOOP);
             for (int i = 0; i <= 360; i++)
-            { // Per ogni grado da 0 a 360 aggiunge un vertice al contorno del cerchio
+            {
                 glVertex2f(WINDOW_SIZE / 2 + radius * cos(i * PI / 180), WINDOW_SIZE / 2 - yOffset + radius * sin(i * PI / 180));
             }
             glEnd();
@@ -115,14 +117,14 @@ void initTriangles()
         triangles[i].y = WINDOW_SIZE + TRIANGLE_SIZE / 2; // Imposta la coordinata y del triangolo al di sopra della finestra di gioco
         triangles[i].size = rand() % TRIANGLE_SIZE + minTriangleSize; // Imposta la dimensione del triangolo in modo casuale
         triangles[i].xVelocity = rand() % 2 == 0 ? triangleXVelocity : -1 * triangleXVelocity; // Imposta la velocità orizzontale del triangolo
-        triangles[i].yVelocity = rand() % 5;
+        triangles[i].yVelocity = rand() % 5; // Imposta la velocità verticale del triangolo in modo casuale
     }
 }
 
 // Funzione per disegnare un triangolo sullo schermo
 void drawTriangle(Triangle t) 
 {
-    glBegin(GL_TRIANGLES); // Inizia a disegnare un triangolo
+    glBegin(GL_TRIANGLES);
 
     // Imposta il colore del primo vertice a marrone chiaro (HEX #A18d6f ; RGB(161,141,111)
     glColor4f(0.63, 0.55, 0.44, 1.0);
@@ -139,9 +141,9 @@ void drawTriangle(Triangle t)
     glEnd();
 
     if (showHitbox) 
-    { // Se la hitbox è abilitata
+    { 
         glColor3f(1.0, 1.0, 1.0); // Imposta il colore della hitbox a bianco
-        glBegin(GL_LINES); // Inizia a disegnare delle linee
+        glBegin(GL_LINES);
         glVertex2f(t.x - 5, t.y); // Disegna una linea orizzontale al centro del triangolo
         glVertex2f(t.x + 5, t.y); 
         glVertex2f(t.x, t.y + 5); // Disegna una linea verticale al centro del triangolo
@@ -150,9 +152,9 @@ void drawTriangle(Triangle t)
     }
 
     if (debug)
-    { // Se sono in debug mode
+    { 
         glColor3f(1.0, 0.0, 0.0); // Imposta il colore del contorno a rosso
-        glBegin(GL_LINE_LOOP); // Inizia a disegnare una linea chiusa
+        glBegin(GL_LINE_LOOP); 
         glVertex2f(t.x, t.y - t.size / 2); // Imposta il primo vertice del contorno in basso al centro
         glVertex2f(t.x - t.size / 3, t.y + t.size / 2); // Imposta il secondo vertice del contorno in alto a sinistra
         glVertex2f(t.x + t.size / 3, t.y + t.size / 2); // Imposta il terzo vertice del contorno in alto a destra
@@ -162,10 +164,10 @@ void drawTriangle(Triangle t)
 
 Triangle restoreTriangle(Triangle t)
 {
-    t.x = rand() % (WINDOW_SIZE - TRIANGLE_SIZE) + TRIANGLE_SIZE / 2; // Imposta la coordinata x del triangolo in modo casuale
-    t.y = WINDOW_SIZE + TRIANGLE_SIZE / 2; // Imposta la coordinata y del triangolo al di sopra della finestra di gioco
-    t.size = rand() % TRIANGLE_SIZE + minTriangleSize; // Imposta la dimensione del triangolo in modo casuale
-    t.xVelocity = rand() % 2 == 0 ? triangleXVelocity : -1 * triangleXVelocity; // Imposta la velocità orizzontale del triangolo
+    t.x = rand() % (WINDOW_SIZE - TRIANGLE_SIZE) + TRIANGLE_SIZE / 2;
+    t.y = WINDOW_SIZE + TRIANGLE_SIZE / 2; 
+    t.size = rand() % TRIANGLE_SIZE + minTriangleSize; 
+    t.xVelocity = rand() % 2 == 0 ? triangleXVelocity : -1 * triangleXVelocity; 
     t.yVelocity = rand() % 5;
     return t;
 }
@@ -185,7 +187,7 @@ void updateTriangles(int value)
         if (triangles[i].y < -1*TRIANGLE_SIZE / 2)
         { // Se il triangolo esce dal bordo inferiore della finestra di gioco
             score += 5; // Incrementa il punteggio del giocatore
-            triangles[i] = restoreTriangle(triangles[i]); // Ricrea un triangolo
+            triangles[i] = restoreTriangle(triangles[i]); // Ridefinisci il triangolo
         }
 
         // Se il triangolo collide con il quadrato
@@ -201,14 +203,14 @@ void drawSquare()
 {
     // Disegna la piattaforma
     glColor3f(0.0, 0.0, 1.0); // Imposta il colore della piattaforma a blu
-    glBegin(GL_LINES); // Inizia a disegnare una linea
+    glBegin(GL_LINES);
     glVertex2f(0, platform_y); // Imposta il primo punto della linea al bordo sinistro della finestra di gioco e alla coordinata y della piattaforma
     glVertex2f(WINDOW_SIZE, platform_y); // Imposta il secondo punto della linea al bordo destro della finestra di gioco e alla coordinata y della piattaforma
-    glEnd(); // Termina di disegnare la linea
+    glEnd();
 
     // Disegna il quadrato
     glColor3f(0.96, 0.73, 0.04); // Imposta il colore del quadrato a giallo (HEX #f6ba0a ; RGB(246,186,10))
-    glBegin(GL_POLYGON); // Inizia a disegnare un poligono
+    glBegin(GL_POLYGON); 
     glVertex2f(squareX - SQUARE_SIZE / 2, squareY - SQUARE_SIZE / 2 + 10); // Imposta il primo vertice del quadrato in basso a sinistra
     glVertex2f(squareX + SQUARE_SIZE / 2, squareY - SQUARE_SIZE / 2 + 10); // Imposta il secondo vertice del quadrato in basso a destra
     glVertex2f(squareX + SQUARE_SIZE / 2, squareY + SQUARE_SIZE / 2 + 10); // Imposta il terzo vertice del quadrato in alto a destra
@@ -216,24 +218,24 @@ void drawSquare()
     glEnd();
 
     if (showHitbox)
-    { // Se la hitbox è abilitata
-        glColor3f(1.0, 1.0, 1.0); // Imposta il colore della hitbox a bianco
-        glBegin(GL_LINES); // Inizia a disegnare delle linee
-        glVertex2f(squareX - 5, squareY + 10); // Disegna una linea orizzontale al centro del quadrato
+    { 
+        glColor3f(1.0, 1.0, 1.0); 
+        glBegin(GL_LINES); 
+        glVertex2f(squareX - 5, squareY + 10);
         glVertex2f(squareX + 5, squareY + 10);
-        glVertex2f(squareX, squareY + 5 + 10); // Disegna una linea verticale al centro del quadrato
+        glVertex2f(squareX, squareY + 5 + 10); 
         glVertex2f(squareX, squareY - 5 + 10);
         glEnd();
     }
 
     if (debug)
-    { // Se sono in debug mode
-        glColor3f(1.0, 0.0, 0.0); // Imposta il colore del contorno a rosso
-        glBegin(GL_LINE_LOOP); // Inizia a disegnare una linea chiusa
-        glVertex2f(squareX - SQUARE_SIZE / 2, squareY - SQUARE_SIZE / 2 + 10); // Imposta il primo vertice del contorno in basso a sinistra
-        glVertex2f(squareX + SQUARE_SIZE / 2, squareY - SQUARE_SIZE / 2 + 10); // Imposta il secondo vertice del contorno in basso a destra
-        glVertex2f(squareX + SQUARE_SIZE / 2, squareY + SQUARE_SIZE / 2 + 10); // Imposta il terzo vertice del contorno in alto a destra
-        glVertex2f(squareX - SQUARE_SIZE / 2, squareY + SQUARE_SIZE / 2 + 10); // Imposta il quarto vertice del contorno in alto a sinistra
+    { 
+        glColor3f(1.0, 0.0, 0.0); 
+        glBegin(GL_LINE_LOOP); 
+        glVertex2f(squareX - SQUARE_SIZE / 2, squareY - SQUARE_SIZE / 2 + 10); 
+        glVertex2f(squareX + SQUARE_SIZE / 2, squareY - SQUARE_SIZE / 2 + 10); 
+        glVertex2f(squareX + SQUARE_SIZE / 2, squareY + SQUARE_SIZE / 2 + 10); 
+        glVertex2f(squareX - SQUARE_SIZE / 2, squareY + SQUARE_SIZE / 2 + 10);
         glEnd();
     }
 }
@@ -311,7 +313,7 @@ void display()
         }
     }
 
-    glutSwapBuffers(); // Scambia i buffer per visualizzare il contenuto disegnato sullo schermo
+    glutSwapBuffers();
 }
 
 // Update della scena
@@ -325,14 +327,14 @@ void update_scene(int value)
             dropVelocity += 0.001; // Incrementa il valore di dropVelocity (i triangoli scendono più velocemente)
             if (score >= winScore)
             {
-                cout << "HAI VINTO!"<< endl<<"Punteggio finale : " << score << endl; // Stampa il punteggio finale sul terminale
-                exit(0); // Termina l'esecuzione del programma
+                cout << "HAI VINTO!"<< endl<<"Punteggio finale : " << score << endl;
+                exit(0); 
             }
         }
         else // Se il gioco è terminato
         {
-            cout << "Punteggio finale: " << score << endl; // Stampa il punteggio finale sul terminale
-            exit(0); // Termina l'esecuzione del programma
+            cout << "Punteggio finale: " << score << endl;
+            exit(0); 
         }
         updateParticles(); // Aggiorna lo stato delle particelle
         glutPostRedisplay();
@@ -346,31 +348,43 @@ void keyboard(unsigned char key, int x, int y)
     switch (key) 
     {
     case 'a':
-        squareX -= SQUARE_SIZE;
-        if (squareX < SQUARE_SIZE / 2) 
+        if (!paused)
         {
-            squareX = SQUARE_SIZE / 2;
+            squareX -= SQUARE_SIZE;
+            if (squareX < SQUARE_SIZE / 2)
+            {
+                squareX = SQUARE_SIZE / 2;
+            }
         }
         break;
     case 'A':
-        squareX -= SQUARE_SIZE;
-        if (squareX < SQUARE_SIZE / 2) 
+        if (!paused)
         {
-            squareX = SQUARE_SIZE / 2;
+            squareX -= SQUARE_SIZE;
+            if (squareX < SQUARE_SIZE / 2)
+            {
+                squareX = SQUARE_SIZE / 2;
+            }
         }
         break;
     case 'd':
-        squareX += SQUARE_SIZE;
-        if (squareX > WINDOW_SIZE - SQUARE_SIZE / 2) 
+        if (!paused)
         {
-            squareX = WINDOW_SIZE - SQUARE_SIZE / 2;
+            squareX += SQUARE_SIZE;
+            if (squareX > WINDOW_SIZE - SQUARE_SIZE / 2)
+            {
+                squareX = WINDOW_SIZE - SQUARE_SIZE / 2;
+            }
         }
         break;
     case 'D':
-        squareX += SQUARE_SIZE;
-        if (squareX > WINDOW_SIZE - SQUARE_SIZE / 2) 
+        if (!paused)
         {
-            squareX = WINDOW_SIZE - SQUARE_SIZE / 2;
+            squareX += SQUARE_SIZE;
+            if (squareX > WINDOW_SIZE - SQUARE_SIZE / 2)
+            {
+                squareX = WINDOW_SIZE - SQUARE_SIZE / 2;
+            }
         }
         break;
     // Mostra o nasconde le hitbox
@@ -399,7 +413,7 @@ void keyboard(unsigned char key, int x, int y)
 
     // Esce dal gioco
     case 27:
-        cout << "Punteggio finale: " << score << endl; // Stampa il punteggio finale sul terminale
+        cout << "Punteggio finale: " << score << endl;
         exit(0);
         break;
 
@@ -408,7 +422,6 @@ void keyboard(unsigned char key, int x, int y)
     }
 }
 
-// Funzione principale del programma
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
