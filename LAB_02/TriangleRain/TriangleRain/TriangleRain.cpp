@@ -56,6 +56,21 @@ const int winScore = 500; // Punti per vincere
 
 Particle particles[MAX_PARTICLES]; // Array di particelle
 
+//Prototipi
+void drawSfondo();
+void initTriangles();
+void drawTriangle(Triangle t);
+Triangle restoreTriangle(Triangle t);
+void updateTriangles(int value);
+void drawSquare();
+void initParticles();
+void updateParticles();
+void drawParticles();
+void drawScore();
+void display();
+void update_scene(int value);
+void keyboard(unsigned char key, int x, int y);
+
 void drawSfondo()
 {
     // Disegna cerchi concentrici sullo sfondo
