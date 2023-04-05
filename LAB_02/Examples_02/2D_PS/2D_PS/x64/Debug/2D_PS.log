@@ -1,1 +1,13 @@
-﻿  2D_PS.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\Examples_02\2D_PS\x64\Debug\2D_PS.exe
+﻿  2D_PS.cpp
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(60,24): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(100,16): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(101,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(102,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(122,32): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(168,18): warning C4477: 'fprintf' : format string '%i' requires an argument of type 'int', but variadic argument 1 has type 'unsigned __int64'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(168,18): message : consider using '%zi' in the format string
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(203,28): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\Examples_02\2D_PS\2D_PS\2D_PS.cpp(203,21): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  ShaderMaker.cpp
+  Generating Code...
+  2D_PS.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_02\Examples_02\2D_PS\x64\Debug\2D_PS.exe

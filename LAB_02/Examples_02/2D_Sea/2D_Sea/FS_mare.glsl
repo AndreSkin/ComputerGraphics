@@ -1,3 +1,5 @@
+#version 330 core
+
 uniform float time;
 uniform vec2 resolution;
 in vec4 ourColor;
