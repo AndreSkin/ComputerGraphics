@@ -1006,21 +1006,21 @@ void loadObjFile(string file_path, Mesh* mesh)
 				glm::vec3(tmp_vertices[ib]) - glm::vec3(tmp_vertices[ia]),
 				glm::vec3(tmp_vertices[ic]) - glm::vec3(tmp_vertices[ia])));
 
-			////Normali ai vertici (TODO)
-			//tmp_normals[ia] += normal;
-			//tmp_normals[ib] += normal;
-			//tmp_normals[ic] += normal;
-			////Put an index to the normal for all 3 vertex of the face
-			//normalIndices.push_back(ia);
-			//normalIndices.push_back(ib);
-			//normalIndices.push_back(ic);
-
-			// Normali alle facce
-			tmp_normals[i / 3] = normal;
+			//Normali ai vertici (TODO)
+			tmp_normals[ia] += normal;
+			tmp_normals[ib] += normal;
+			tmp_normals[ic] += normal;
 			//Put an index to the normal for all 3 vertex of the face
-			normalIndices.push_back(i / 3);
-			normalIndices.push_back(i / 3);
-			normalIndices.push_back(i / 3);
+			normalIndices.push_back(ia);
+			normalIndices.push_back(ib);
+			normalIndices.push_back(ic);
+
+			//// Normali alle facce
+			//tmp_normals[i / 3] = normal;
+			////Put an index to the normal for all 3 vertex of the face
+			//normalIndices.push_back(i / 3);
+			//normalIndices.push_back(i / 3);
+			//normalIndices.push_back(i / 3);
 		}
 	}
 
