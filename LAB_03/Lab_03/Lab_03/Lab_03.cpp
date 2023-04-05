@@ -41,6 +41,7 @@ based on the OpenGL Shading Language (GLSL) specifications.
 #define NUM_SHADERS 9
 
 using namespace std;
+using namespace glm;
 
 // Viewport size
 static int WindowWidth = 1120; //1366;
@@ -63,6 +64,8 @@ typedef enum {
 	BRASS,
 	SLATE,
 	NO_MATERIAL
+
+	// TODO Aggiungere materiale personalizzato
 } MaterialType;
 
 typedef struct {
@@ -77,24 +80,24 @@ typedef enum { // used also as index, don't modify order
 	GOURAUD,
 	PHONG,
 	BLINN,
-	TOON,
+	TOON, // TODO toon
 	PASS_THROUGH,
-	WAVE
+	WAVE // TODO shader mare
 } ShadingType;
 
 typedef struct {
 	Mesh mesh;
 	MaterialType material;
 	ShadingType shading;
-	glm::mat4 M;
+	glm::mat4 M; // Trasforazione da ocs a wcs
 	string name;
 } Object;
 
 typedef struct {
-	GLuint light_position_pointer;
+	GLuint light_position_pointer; // TODO spostare la luce
 	GLuint light_color_pointer;
 	GLuint light_power_pointer;
-	GLuint material_diffuse;
+	GLuint material_diffuse; // colore luce
 	GLuint material_ambient;
 	GLuint material_specular;
 	GLuint material_shininess;
@@ -115,6 +118,8 @@ static vector<Material> materials;
 static int selected_obj = 0;
 
 // Materiali disponibili
+// diffuse dà colore
+// shininess dà lucidità
 glm::vec3 red_plastic_ambient = { 0.1, 0.0, 0.0 }, red_plastic_diffuse = { 0.6, 0.1, 0.1 }, red_plastic_specular = { 0.7, 0.6, 0.6 }; GLfloat red_plastic_shininess = 32.0f;
 glm::vec3 brass_ambient = { 0.1, 0.06, 0.015 }, brass_diffuse = { 0.78, 0.57, 0.11 }, brass_specular = { 0.99, 0.91, 0.81 }; GLfloat brass_shininess = 27.8f;
 glm::vec3 emerald_ambient = { 0.0215, 0.04745, 0.0215 }, emerald_diffuse = { 0.07568, 0.61424, 0.07568 }, emerald_specular = { 0.633, 0.727811, 0.633 }; GLfloat emerald_shininess = 78.8f;
@@ -143,7 +148,7 @@ struct {
 	float fovY, aspect, near_plane, far_plane;
 } PerspectiveSetup;
 
-typedef enum {
+typedef enum { // TODO aggiungere opzioni menù
 	WIRE_FRAME,
 	FACE_FILL,
 	CULLING_ON,
@@ -399,6 +404,7 @@ void initShader()
 	//TODO
 	//TOON Shader Loading
 	//TODO
+
 	//Pass-Through Shader loading
 	shaders_IDs[PASS_THROUGH] = createProgram(ShaderDir + "v_passthrough.glsl", ShaderDir + "f_passthrough.glsl");
 	//Otteniamo i puntatori alle variabili uniform per poterle utilizzare in seguito
@@ -410,7 +416,7 @@ void initShader()
 	glUniform4fv(glGetUniformLocation(shaders_IDs[PASS_THROUGH], "Color"), 1, value_ptr(glm::vec4(1.0, 1.0, 1.0, 1.0)));
 }
 
-void init() {
+void init() { // Set luce, oggetti, matereiali ecc
 	// Default render settings
 	OperationMode = NAVIGATION;
 	glEnable(GL_DEPTH_TEST);	// Hidden surface removal
@@ -545,7 +551,7 @@ void drawScene() {
 			glUseProgram(shaders_IDs[WAVE]);
 			// Caricamento matrice trasformazione del modello
 			glUniformMatrix4fv(base_uniforms[WAVE].M_Matrix_pointer, 1, GL_FALSE, value_ptr(objects[i].M));
-			// Time setting
+			// Time setting (per le onde)
 			glUniform1f(base_uniforms[WAVE].time_delta_pointer, clock());
 			break;
 		default:
@@ -875,7 +881,7 @@ void modifyModelMatrix(glm::vec3 translation_vector, glm::vec3 rotation_vector, 
 	//TODO 
 }
 
-void generate_and_load_buffers(bool generate, Mesh* mesh)
+void generate_and_load_buffers(bool generate, Mesh* mesh) // Trasferimento geometria in gpu
 {
 	if (generate) {
 		// Genero 1 Vertex Array Object
@@ -983,6 +989,7 @@ void loadObjFile(string file_path, Mesh* mesh)
 		// normal of each face saved 1 time PER FACE!
 		for (int i = 0; i < vertexIndices.size(); i += 3)
 		{
+			// Veritici triangolo
 			GLushort ia = vertexIndices[i];
 			GLushort ib = vertexIndices[i + 1];
 			GLushort ic = vertexIndices[i + 2];
@@ -990,11 +997,11 @@ void loadObjFile(string file_path, Mesh* mesh)
 				glm::vec3(tmp_vertices[ib]) - glm::vec3(tmp_vertices[ia]),
 				glm::vec3(tmp_vertices[ic]) - glm::vec3(tmp_vertices[ia])));
 
-			//Normali ai vertici
+			////Normali ai vertici (TODO)
 			//tmp_normals[ia] += normal;
 			//tmp_normals[ib] += normal;
 			//tmp_normals[ic] += normal;
-			//Put an index to the normal for all 3 vertex of the face
+			////Put an index to the normal for all 3 vertex of the face
 			//normalIndices.push_back(ia);
 			//normalIndices.push_back(ib);
 			//normalIndices.push_back(ic);
