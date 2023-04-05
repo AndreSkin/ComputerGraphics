@@ -50,8 +50,10 @@ bool trascinamento = false;
 float tolleranza_trascinamento = 0.1;
 
 bool show_points = false;
+bool show_line = false;
 
 int NumPts = 0;
+int pointsToDraw = 50;
 
 // Window size in pixels
 int		width = 500;
@@ -182,6 +184,10 @@ void myKeyboardFunc(unsigned char key, int x, int y)
 		show_points = !show_points;
 		glutPostRedisplay();
 		break;
+	case 's':
+		show_line = !show_line;
+		glutPostRedisplay();
+		break;
 	case 27:			// Escape key
 		exit(0);
 		break;
@@ -304,7 +310,7 @@ void drawScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	if (NumPts > 1) 
+	if (NumPts > 2) 
 	{
 		float result[2];
 		for (int i = 0; i <= 100; i++) {
@@ -319,8 +325,8 @@ void drawScene(void)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(CurveArray), &CurveArray[0], GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
-		glLineWidth(1.0);
-		glDrawArrays(GL_LINE_STRIP, 0, 100);
+		glLineWidth(2.0);
+		glDrawArrays(GL_LINE_STRIP, 0, 100 +1 );
 
 		glBindVertexArray(0);
 	}
@@ -331,8 +337,8 @@ void drawScene(void)
 		int i = 0;
 
 		for (int y = 0; y < NumPts - 1; y++) {
-			for (i; i <= (50 + (50 * y)); i++) {
-				catmull_rom((((GLfloat)i - (50 * y)) / 50), result_2, y);
+			for (i; i <= (pointsToDraw + (pointsToDraw * y)); i++) {
+				catmull_rom((((GLfloat)i - (pointsToDraw * y)) / pointsToDraw), result_2, y);
 				interp_curve[i][0] = result_2[0];
 				interp_curve[i][1] = result_2[1];
 			}
@@ -344,7 +350,7 @@ void drawScene(void)
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 		glLineWidth(1.0);
-		glDrawArrays(GL_LINE_STRIP, 0, 50 * (NumPts - 1));
+		glDrawArrays(GL_LINE_STRIP, 0, (pointsToDraw * (NumPts - 1)) +1);
 
 		glBindVertexArray(0);
 	}
@@ -374,8 +380,13 @@ void drawScene(void)
 	glPointSize(6.0);
 	glDrawArrays(GL_POINTS, 0, NumPts);
 	// Draw the line segments between CP
-	glLineWidth(2.0);
-	glDrawArrays(GL_LINE_STRIP, 0, NumPts);
+
+	if (show_line)
+	{
+		glLineWidth(1.0);
+		glDrawArrays(GL_LINE_STRIP, 0, NumPts);
+	}
+
 
 	glBindVertexArray(0);
 
