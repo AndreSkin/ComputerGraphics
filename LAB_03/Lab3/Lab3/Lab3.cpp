@@ -421,6 +421,7 @@ void initShader()
 	base_unif.P_Matrix_pointer = glGetUniformLocation(shaders_IDs[WAVE], "P");
 	base_unif.V_Matrix_pointer = glGetUniformLocation(shaders_IDs[WAVE], "V");
 	base_unif.M_Matrix_pointer = glGetUniformLocation(shaders_IDs[WAVE], "M");
+	base_unif.time_delta_pointer = glGetUniformLocation(shaders_IDs[WAVE], "time");
 	base_uniforms[ShadingType::WAVE] = base_unif;
 	light_unif.material_ambient = glGetUniformLocation(shaders_IDs[WAVE], "material.ambient");
 	light_unif.material_diffuse = glGetUniformLocation(shaders_IDs[WAVE], "material.diffuse");
