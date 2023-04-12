@@ -337,7 +337,7 @@ void init_bunny() {
 	obj7.material = MaterialType::MY_MATERIAL; // NO_MATERIAL;
 	obj7.shading = ShadingType::PHONG; // GOURAUD; // TOON;
 	obj7.name = "Bunny";
-	obj7.M = glm::scale(glm::translate(glm::mat4(1), glm::vec3(0., 0., -2.)), glm::vec3(2., 2., 2.));
+	obj7.M = glm::scale(glm::translate(glm::mat4(1), glm::vec3(0., 5., -2.)), glm::vec3(2., 2., 2.));
 	objects.push_back(obj7);
 }
 
@@ -995,36 +995,38 @@ void moveCameraDown()
 	ViewSetup.target += glm::vec4(upDirection, 0.0);
 }
 
-void modifyModelMatrix(glm::vec3 translation_vector, glm::vec3 rotation_vector, GLfloat angle, GLfloat scale_factor)
-{
-	glm::mat4 translation_matrix;
-	glm::mat4 rotation_matrix;
-	glm::mat4 scale_matrix;
-	switch (TransformMode) {
-	case WCS:
-		// Costruisco le matrici di traslazione, rotazione e scalamento
-		glm::vec3 WCS_COORDINATES = -objects[selected_obj].M[1];
-		translation_matrix = glm::translate(objects[selected_obj].M, WCS_COORDINATES);
-		translation_matrix = glm::translate(objects[selected_obj].M, translation_vector);
-		break;
-	case OCS:
-		// Costruisco le matrici di traslazione, rotazione e scalamento
-		translation_matrix = glm::translate(objects[selected_obj].M, translation_vector);
-		break;
-	}
-	rotation_matrix = glm::rotate(objects[selected_obj].M, angle, rotation_vector);
-	scale_matrix = glm::scale(objects[selected_obj].M, glm::vec3(scale_factor));
+void modifyModelMatrix(glm::vec3 translation_vector, glm::vec3 rotation_vector, GLfloat angle, GLfloat scale_factor) {
+	// Recupera la posizione corrente dell'oggetto selezionato
+	glm::vec4 object_position = objects[selected_obj].M[3];
 
-	// Applico la matrice di trasformazione al modello corrente
-	switch (OperationMode) {
+	// Crea le matrici di trasformazione per la traslazione, la rotazione e la scala
+	glm::mat4 translation_matrix = glm::translate(glm::mat4(1.0f), translation_vector);
+	glm::mat4 rotation_matrix = glm::rotate(glm::mat4(1.0f), angle, rotation_vector);
+	glm::mat4 scale_matrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale_factor));
+
+	if (TransformMode == OCS) 
+	{
+		// Crea le matrici per traslare l'oggetto al centro del sistema di coordinate del mondo e per riportarlo nella sua posizione originale
+		glm::mat4 to_origin = glm::translate(glm::mat4(1.0f), -glm::vec3(object_position));
+		glm::mat4 from_origin = glm::translate(glm::mat4(1.0f), glm::vec3(object_position));
+
+		// Modifica le matrici di trasformazione in modo che le trasformazioni vengano applicate rispetto al sistema di coordinate locale dell'oggetto
+		translation_matrix = from_origin * translation_matrix * to_origin;
+		rotation_matrix = from_origin * rotation_matrix * to_origin;
+		scale_matrix = from_origin * scale_matrix * to_origin;
+	}
+
+	// Applica la trasformazione corretta all'oggetto selezionato in base al valore di OperationMode
+	switch (OperationMode) 
+	{
 	case TRASLATING:
-		objects[selected_obj].M = translation_matrix;
+		objects[selected_obj].M = translation_matrix * objects[selected_obj].M;
 		break;
 	case ROTATING:
-		objects[selected_obj].M = rotation_matrix;
+		objects[selected_obj].M = rotation_matrix * objects[selected_obj].M;
 		break;
 	case SCALING:
-		objects[selected_obj].M = scale_matrix;
+		objects[selected_obj].M = scale_matrix * objects[selected_obj].M;
 		break;
 	}
 }
