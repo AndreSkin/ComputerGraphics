@@ -292,7 +292,7 @@ void init_sphere_SMOOTH() {
 	Object obj4 = {};
 	obj4.mesh = sphereS;
 	obj4.material = MaterialType::EMERALD;
-	obj4.shading = ShadingType::TOON;
+	obj4.shading = ShadingType::GOURAUD;
 	obj4.name = "Sphere SMOOTH";
 	obj4.M = glm::translate(glm::mat4(1), glm::vec3(6., 0., -3.));
 	objects.push_back(obj4);
@@ -335,7 +335,7 @@ void init_bunny() {
 	Object obj7 = {};
 	obj7.mesh = sphereS;
 	obj7.material = MaterialType::MY_MATERIAL; // NO_MATERIAL;
-	obj7.shading = ShadingType::TOON; // GOURAUD; // TOON;
+	obj7.shading = ShadingType::PHONG; // GOURAUD; // TOON;
 	obj7.name = "Bunny";
 	obj7.M = glm::scale(glm::translate(glm::mat4(1), glm::vec3(0., 0., -2.)), glm::vec3(2., 2., 2.));
 	objects.push_back(obj7);
@@ -581,7 +581,7 @@ void init() {
 	init_waving_plane();
 
 	//Airplane model with TOON SHADING
-	init_airplane();
+	//init_airplane();
 
 	//Bunny
 	init_bunny();

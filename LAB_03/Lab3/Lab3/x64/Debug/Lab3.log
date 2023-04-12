@@ -11,12 +11,12 @@ C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp
 C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(800,39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(808,15): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(864,74): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(946,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(947,19): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(945,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(946,19): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(1188,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(1197,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(1187,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(1196,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   Lab3.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_03\Lab3\x64\Debug\Lab3.exe
