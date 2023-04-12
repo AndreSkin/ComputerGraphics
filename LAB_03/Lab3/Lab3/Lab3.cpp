@@ -66,7 +66,7 @@ typedef enum {
 	EMERALD,
 	BRASS,
 	SLATE,
-	ZAPHIRE,
+	MY_MATERIAL,
 	NO_MATERIAL
 } MaterialType;
 
@@ -124,7 +124,7 @@ glm::vec3 red_plastic_ambient = { 0.1, 0.0, 0.0 }, red_plastic_diffuse = { 0.6, 
 glm::vec3 brass_ambient = { 0.1, 0.06, 0.015 }, brass_diffuse = { 0.78, 0.57, 0.11 }, brass_specular = { 0.99, 0.91, 0.81 }; GLfloat brass_shininess = 27.8f;
 glm::vec3 emerald_ambient = { 0.0215, 0.04745, 0.0215 }, emerald_diffuse = { 0.07568, 0.61424, 0.07568 }, emerald_specular = { 0.633, 0.727811, 0.633 }; GLfloat emerald_shininess = 78.8f;
 glm::vec3 slate_ambient = { 0.02, 0.02, 0.02 }, slate_diffuse = { 0.1, 0.1, 0.1 }, slate_specular{ 0.4, 0.4, 0.4 }; GLfloat slate_shininess = 1.78125f;
-glm::vec3 zaphire_ambient = { 0.0, 0.0, 0.1 }, zaphire_diffuse = { 0.0, 0.0, 0.8 }, zaphire_specular = { 1, 1, 1 }; GLfloat zaphire_shininess = 128;
+glm::vec3 MY_MATERIAL_ambient = { 0.21, 0.12, 0.054 }, MY_MATERIAL_diffuse = { 0.71, 0.42, 0.18 }, MY_MATERIAL_specular = { 1,1,1 }; GLfloat MY_MATERIAL_shininess = 25.5f;
 
 typedef struct {
 	glm::vec3 position;
@@ -142,6 +142,7 @@ struct {
 	glm::vec4 position;
 	glm::vec4 target;
 	glm::vec4 upVector;
+	glm::vec4 directionVector;
 } ViewSetup;
 
 struct {
@@ -302,7 +303,7 @@ void init_waving_plane() {
 	// Object Setup use the light shader and a material for color and light behavior
 	Object obj5 = {};
 	obj5.mesh = sphereS;
-	obj5.material = MaterialType::ZAPHIRE;
+	obj5.material = MaterialType::MY_MATERIAL;
 	obj5.shading = ShadingType::WAVE;// WAVE;
 	obj5.name = "Waves";
 	obj5.M = glm::scale(glm::translate(glm::mat4(1), glm::vec3(0., -2., 0.)), glm::vec3(8., 8., 8.));
@@ -331,7 +332,7 @@ void init_bunny() {
 	// Object Setup use the light shader and a material for color and light behavior
 	Object obj7 = {};
 	obj7.mesh = sphereS;
-	obj7.material = MaterialType::ZAPHIRE; // NO_MATERIAL;
+	obj7.material = MaterialType::MY_MATERIAL; // NO_MATERIAL;
 	obj7.shading = ShadingType::TOON; // GOURAUD; // TOON;
 	obj7.name = "Bunny";
 	obj7.M = glm::scale(glm::translate(glm::mat4(1), glm::vec3(0., 0., -2.)), glm::vec3(2., 2., 2.));
@@ -526,11 +527,11 @@ void init() {
 	materials[MaterialType::SLATE].specular = slate_specular;
 	materials[MaterialType::SLATE].shininess = slate_shininess;
 
-	materials[MaterialType::ZAPHIRE].name = "Zaphire";
-	materials[MaterialType::ZAPHIRE].ambient = zaphire_ambient;
-	materials[MaterialType::ZAPHIRE].diffuse = zaphire_diffuse;
-	materials[MaterialType::ZAPHIRE].specular = zaphire_specular;
-	materials[MaterialType::ZAPHIRE].shininess = zaphire_shininess;
+	materials[MaterialType::MY_MATERIAL].name = "MY_MATERIAL";
+	materials[MaterialType::MY_MATERIAL].ambient = MY_MATERIAL_ambient;
+	materials[MaterialType::MY_MATERIAL].diffuse = MY_MATERIAL_diffuse;
+	materials[MaterialType::MY_MATERIAL].specular = MY_MATERIAL_specular;
+	materials[MaterialType::MY_MATERIAL].shininess = MY_MATERIAL_shininess;
 
 	materials[MaterialType::NO_MATERIAL].name = "NO_MATERIAL";
 	materials[MaterialType::NO_MATERIAL].ambient = glm::vec3(1, 1, 1);
@@ -543,6 +544,7 @@ void init() {
 	ViewSetup.position = glm::vec4(10.0, 10.0, 10.0, 0.0);
 	ViewSetup.target = glm::vec4(0.0, 0.0, 0.0, 0.0);
 	ViewSetup.upVector = glm::vec4(0.0, 1.0, 0.0, 0.0);
+	ViewSetup.directionVector = glm::vec4(1.0, 0.0, 0.0, 0.0);
 	PerspectiveSetup = {};
 	PerspectiveSetup.aspect = (GLfloat)WindowWidth / (GLfloat)WindowHeight;
 	PerspectiveSetup.fovY = 45.0f;
@@ -901,7 +903,7 @@ void buildOpenGLMenu()
 	glutAddMenuEntry(materials[MaterialType::EMERALD].name.c_str(), MaterialType::EMERALD);
 	glutAddMenuEntry(materials[MaterialType::BRASS].name.c_str(), MaterialType::BRASS);
 	glutAddMenuEntry(materials[MaterialType::SLATE].name.c_str(), MaterialType::SLATE);
-	glutAddMenuEntry(materials[MaterialType::ZAPHIRE].name.c_str(), MaterialType::ZAPHIRE);
+	glutAddMenuEntry(materials[MaterialType::MY_MATERIAL].name.c_str(), MaterialType::MY_MATERIAL);
 
 	int shaderSubMenu = glutCreateMenu(shading_menu_function);
 
@@ -952,22 +954,20 @@ void moveCameraBack()
 
 void moveCameraLeft()
 {
-	glm::vec4 direction = ViewSetup.target - ViewSetup.position;
-	glm::vec4 right = glm::vec4(glm::cross(glm::vec3(direction), glm::vec3(ViewSetup.upVector)), 0.0f);
-	right = glm::normalize(right);
-	glm::vec4 leftTranslation = -right * CAMERA_TRASLATION_SPEED;
-	ViewSetup.position += leftTranslation;
-	ViewSetup.target += leftTranslation;
+	glm::vec3 direction = ViewSetup.target - ViewSetup.position;
+	glm::vec3 slide_vector = glm::normalize(glm::cross(direction, glm::vec3(ViewSetup.directionVector)));
+	glm::vec3 moveDirection = glm::cross(direction, slide_vector) * CAMERA_TRASLATION_SPEED;
+	ViewSetup.position -= glm::vec4(moveDirection, 0.0);
+	ViewSetup.target -= glm::vec4(moveDirection, 0.0);
 }
 
 void moveCameraRight()
 {
-	glm::vec4 direction = ViewSetup.target - ViewSetup.position;
-	glm::vec4 right = glm::vec4(glm::cross(glm::vec3(direction), glm::vec3(ViewSetup.upVector)), 0.0f);
-	right = glm::normalize(right);
-	glm::vec4 rightTranslation = right * CAMERA_TRASLATION_SPEED;
-	ViewSetup.position += rightTranslation;
-	ViewSetup.target += rightTranslation;
+	glm::vec3 direction = ViewSetup.target - ViewSetup.position;
+	glm::vec3 slide_vector = glm::normalize(glm::cross(direction, glm::vec3(ViewSetup.directionVector)));
+	glm::vec3 moveDirection = glm::cross(direction, slide_vector) * CAMERA_TRASLATION_SPEED;
+	ViewSetup.position += glm::vec4(moveDirection, 0.0);
+	ViewSetup.target += glm::vec4(moveDirection, 0.0);
 }
 
 void moveCameraUp()
