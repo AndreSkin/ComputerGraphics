@@ -67,6 +67,7 @@ typedef enum {
 	BRASS,
 	SLATE,
 	MY_MATERIAL,
+	WATER,
 	NO_MATERIAL
 } MaterialType;
 
@@ -125,6 +126,7 @@ glm::vec3 brass_ambient = { 0.1, 0.06, 0.015 }, brass_diffuse = { 0.78, 0.57, 0.
 glm::vec3 emerald_ambient = { 0.0215, 0.04745, 0.0215 }, emerald_diffuse = { 0.07568, 0.61424, 0.07568 }, emerald_specular = { 0.633, 0.727811, 0.633 }; GLfloat emerald_shininess = 78.8f;
 glm::vec3 slate_ambient = { 0.02, 0.02, 0.02 }, slate_diffuse = { 0.1, 0.1, 0.1 }, slate_specular{ 0.4, 0.4, 0.4 }; GLfloat slate_shininess = 1.78125f;
 glm::vec3 MY_MATERIAL_ambient = { 0.21, 0.12, 0.054 }, MY_MATERIAL_diffuse = { 0.71, 0.42, 0.18 }, MY_MATERIAL_specular = { 1,1,1 }; GLfloat MY_MATERIAL_shininess = 25.5f;
+glm::vec3 WATER_ambient = { 0, 0, 1 }, WATER_diffuse = { 1,0.5, 1 }, WATER_specular = { 1,1,1 }; GLfloat WATER_shininess = 30.0f;
 
 typedef struct {
 	glm::vec3 position;
@@ -303,7 +305,7 @@ void init_waving_plane() {
 	// Object Setup use the light shader and a material for color and light behavior
 	Object obj5 = {};
 	obj5.mesh = sphereS;
-	obj5.material = MaterialType::MY_MATERIAL;
+	obj5.material = MaterialType::WATER;
 	obj5.shading = ShadingType::WAVE;// WAVE;
 	obj5.name = "Waves";
 	obj5.M = glm::scale(glm::translate(glm::mat4(1), glm::vec3(0., -2., 0.)), glm::vec3(8., 8., 8.));
@@ -502,7 +504,7 @@ void init() {
 	light.power = 1.f;
 
 	// Materials setup
-	materials.resize(6);
+	materials.resize(7);
 	materials[MaterialType::RED_PLASTIC].name = "Red Plastic";
 	materials[MaterialType::RED_PLASTIC].ambient = red_plastic_ambient;
 	materials[MaterialType::RED_PLASTIC].diffuse = red_plastic_diffuse;
@@ -532,6 +534,12 @@ void init() {
 	materials[MaterialType::MY_MATERIAL].diffuse = MY_MATERIAL_diffuse;
 	materials[MaterialType::MY_MATERIAL].specular = MY_MATERIAL_specular;
 	materials[MaterialType::MY_MATERIAL].shininess = MY_MATERIAL_shininess;
+
+	materials[MaterialType::WATER].name = "water";
+	materials[MaterialType::WATER].ambient = WATER_ambient;
+	materials[MaterialType::WATER].diffuse = WATER_diffuse;
+	materials[MaterialType::WATER].specular = WATER_specular;
+	materials[MaterialType::WATER].shininess = WATER_shininess;
 
 	materials[MaterialType::NO_MATERIAL].name = "NO_MATERIAL";
 	materials[MaterialType::NO_MATERIAL].ambient = glm::vec3(1, 1, 1);
@@ -911,7 +919,6 @@ void buildOpenGLMenu()
 	glutAddMenuEntry("PHONG", ShadingType::PHONG);
 	glutAddMenuEntry("TOON", ShadingType::TOON);
 	glutAddMenuEntry("PASS_THROUGH", ShadingType::PASS_THROUGH);
-	glutAddMenuEntry("WAVE", ShadingType::WAVE);
 
 	glutCreateMenu(main_menu_func); // richiama main_menu_func() alla selezione di una voce menu
 	glutAddMenuEntry("Opzioni", -1); //-1 significa che non si vuole gestire questa riga
