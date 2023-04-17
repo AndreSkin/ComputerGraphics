@@ -85,7 +85,8 @@ typedef enum { // used also as index, don't modify order
 	BLINN,
 	TOON,
 	PASS_THROUGH,
-	WAVE
+	WAVE,
+	LAST //https://stackoverflow.com/questions/2102582/how-can-i-count-the-items-in-an-enum
 } ShadingType;
 
 typedef struct {
@@ -1028,6 +1029,20 @@ void modifyModelMatrix(glm::vec3 translation_vector, glm::vec3 rotation_vector, 
 	case SCALING:
 		objects[selected_obj].M = scale_matrix * objects[selected_obj].M;
 		break;
+	}
+
+	//Se sto muovendo la luce
+	if (objects[selected_obj].name == "light")
+	{
+		// Imposto la posizione
+		light.position = glm::vec3(objects[selected_obj].M[3]);
+
+		//Rielaboro ogni shader con la nuova luce
+		for (int shading = GOURAUD; shading != LAST; shading = shading + 1)
+		{
+			glUseProgram(shaders_IDs[shading]);
+			glUniform3f(light_uniforms[shading].light_position_pointer, light.position.x, light.position.y, light.position.z);
+		}
 	}
 }
 
