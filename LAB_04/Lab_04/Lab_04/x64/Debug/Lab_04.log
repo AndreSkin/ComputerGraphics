@@ -1,1 +1,9 @@
-﻿  Lab_04.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_04\Lab_04\x64\Debug\Lab_04.exe
+﻿  raytracer_students.cpp
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_04\Lab_04\Lab_04\mesh.h(37,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_04\Lab_04\Lab_04\mesh.h(71,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_04\Lab_04\Lab_04\mesh.h(91,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_04\Lab_04\Lab_04\raytracer_students.cpp(117,44): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_04\Lab_04\Lab_04\raytracer_students.cpp(151,68): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_04\Lab_04\Lab_04\raytracer_students.cpp(161): warning C4715: 'RayTracer::TraceRay': not all control paths return a value
+C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_04\Lab_04\Lab_04\face.h(52): warning C4715: 'Face::operator[]': not all control paths return a value
+  Lab_04.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_04\Lab_04\x64\Debug\Lab_04.exe
