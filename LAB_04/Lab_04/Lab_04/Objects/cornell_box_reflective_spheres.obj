@@ -29,13 +29,13 @@ emitted 0 0 0
 glossiness 0
 
 material
-diffuse 1 0.2 0.2
+diffuse 1 0 0
 reflective 0.8 0.8 0.8
 emitted 0 0 0
 glossiness 0
 
 material
-diffuse 0.2 1 0.2
+diffuse 0 1 0
 reflective 0.2 0.2 0.2
 emitted 0 0 0
 glossiness 0.5
