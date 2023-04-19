@@ -100,13 +100,18 @@ RayTracer::TraceRay(Ray& ray, Hit& hit, int bounce_count) const
 		// ==========================================
 
 		// se (il punto sulla superficie e' riflettente & bounce_count>0)
+		if ((reflectiveColor.Length() != 0) && (bounce_count > 0))
+		{
+			//     calcolare ReflectionRay  R=2<n,l>n -l
+			Vec3f VRay = ray.getDirection();
+			Vec3f reflectionRay = VRay - (2 * VRay.Dot3(normal)*normal);
+			reflectionRay.Normalize();
 
-		//     calcolare ReflectionRay  R=2<n,l>n -l
-
-		//	   invocare TraceRay(ReflectionRay, hit,bounce_count-1)
-
-		//     aggiungere ad answer il contributo riflesso
-
+			Ray* new_ray = new Ray(point, reflectionRay);
+			//invocare TraceRay(ReflectionRay, hit,bounce_count-1)		
+			//     aggiungere ad answer il contributo riflesso
+			answer += TraceRay(*new_ray, hit, bounce_count - 1) * reflectiveColor;
+		}
 		// ----------------------------------------------
 		// add each light
 		int num_lights = mesh->getLights().size();
@@ -148,8 +153,7 @@ RayTracer::TraceRay(Ray& ray, Hit& hit, int bounce_count) const
 					}
 				}
 			}
-			// altrimenti
-			//    la luce i non contribuisce alla luminosita' di point.
+			//Altrimenti la luce i non contribuisce alla luminosita' di point.
 		}
 
 		return answer;
