@@ -153,7 +153,6 @@ RayTracer::TraceRay(Ray& ray, Hit& hit, int bounce_count) const
 				n_ray = new Ray(point, dirToLight);
 			}
 
-
 			// controllare il primo oggetto colpito da tale raggio
 			colpito = CastRay(*n_ray, *new_hit, false);
 			// se e' la sorgente luminosa i-esima allora
