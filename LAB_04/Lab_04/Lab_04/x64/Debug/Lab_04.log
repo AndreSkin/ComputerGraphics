@@ -1,1 +1,9 @@
-﻿  Lab_04.vcxproj -> C:\Users\s0001097628\Desktop\Projects\ComputerGraphics\LAB_04\Lab_04\x64\Debug\Lab_04.exe
+﻿  raytracer_students.cpp
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_04\Lab_04\Lab_04\mesh.h(37,1): warning C4267: 'return': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_04\Lab_04\Lab_04\mesh.h(71,1): warning C4267: 'return': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_04\Lab_04\Lab_04\mesh.h(91,1): warning C4267: 'return': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_04\Lab_04\Lab_04\raytracer_students.cpp(117,44): warning C4267: 'inizializzazione': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_04\Lab_04\Lab_04\raytracer_students.cpp(171,68): warning C4305: 'argomento': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_04\Lab_04\Lab_04\raytracer_students.cpp(181): warning C4715: 'RayTracer::TraceRay': non tutti i percorsi di controllo restituiscono un valore
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_04\Lab_04\Lab_04\face.h(52): warning C4715: 'Face::operator[]': non tutti i percorsi di controllo restituiscono un valore
+  Lab_04.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_04\Lab_04\x64\Debug\Lab_04.exe

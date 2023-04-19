@@ -114,67 +114,66 @@ RayTracer::TraceRay(Ray& ray, Hit& hit, int bounce_count) const
 		}
 		// ----------------------------------------------
 		// add each light
-		int num_lights = mesh->getLights().size();
+		int num_lights = mesh->getLights().size();			
+		Vec3f pointOnLight;
+		Vec3f dirToLight;
 		for (int i = 0; i < num_lights; i++)
 		{
+			Face* f = mesh->getLights()[i];
+
 			// ==========================================
 			// ASSIGNMENT:  ADD SHADOW LOGIC
 			// ==========================================
-			Face* f = mesh->getLights()[i];
-			Vec3f pointOnLight = f->computeCentroid();
-			Vec3f dirToLight = pointOnLight - point;
-			dirToLight.Normalize();
-
 			Ray* n_ray;
 			bool colpito;
 			Vec3f n_point, dista, pti[10];
 			Hit* new_hit = new Hit();
 
 			//SOFT SHADOWS
-			int numLights = mesh->getLights().size();
-			for (int i = 0; i < numLights; i++)
+			extern bool softShadow;
+
+			if (args->softShadow == true)
 			{
-				Face* f = mesh->getLights()[i];
-				extern bool softShadow;
-
-				if (args->softShadow)
+				const int hMax = 200;
+				for (int h = 0; h < hMax; h++)
 				{
-					const int hMax = 10;
-					for (int h = 0; h < hMax; h++)
-					{
-						new_hit = new Hit();
-						pointOnLight = f->RandomPoint(); //Punti casuali
-						dirToLight = pointOnLight - point;
-						dirToLight.Normalize();
-						n_ray = new Ray(point, dirToLight);
-					}
+					new_hit = new Hit();
+					pointOnLight = f->RandomPoint(); //Punti casuali
+					dirToLight = pointOnLight - point;
+					dirToLight.Normalize();
+					n_ray = new Ray(point, dirToLight);
 				}
-
+			}
+			else
+			{
+				pointOnLight = f->computeCentroid();
+				dirToLight = pointOnLight - point;
+				dirToLight.Normalize();
 				// creare shadow ray verso il punto luce
 				n_ray = new Ray(point, dirToLight);
+			}
 
 
-				// controllare il primo oggetto colpito da tale raggio
-				colpito = CastRay(*n_ray, *new_hit, false);
-				// se e' la sorgente luminosa i-esima allora
-				//	calcolare e aggiungere ad answer il contributo luminoso
-				if (colpito)
+			// controllare il primo oggetto colpito da tale raggio
+			colpito = CastRay(*n_ray, *new_hit, false);
+			// se e' la sorgente luminosa i-esima allora
+			//	calcolare e aggiungere ad answer il contributo luminoso
+			if (colpito)
+			{
+				n_point = n_ray->pointAtParameter(new_hit->getT());
+				//Distanza tra punto colpito e punto sulla luce
+				dista.Sub(dista, n_point, pointOnLight);
+
+				if (dista.Length() < 0.01) //punto colpito coincide con luce
 				{
-					n_point = n_ray->pointAtParameter(new_hit->getT());
-					//Distanza tra punto colpito e punto sulla luce
-					dista.Sub(dista, n_point, pointOnLight);
-
-					if (dista.Length() < 0.01) //punto colpito coincide con luce
+					if (normal.Dot3(dirToLight) > 0)
 					{
-						if (normal.Dot3(dirToLight) > 0)
-						{
-							Vec3f lightcolor = 0.2 * f->getMaterial()->getEmittedColor() * f->getArea();
-							answer += m->Shade(ray, hit, dirToLight, lightcolor, args);
-						}
+						Vec3f lightcolor = 0.2 * f->getMaterial()->getEmittedColor() * f->getArea();
+						answer += m->Shade(ray, hit, dirToLight, lightcolor, args);
 					}
 				}
-				//Altrimenti la luce i non contribuisce alla luminosita' di point.
 			}
+			//Altrimenti la luce i non contribuisce alla luminosita' di point.
 		}
 
 		return answer;
