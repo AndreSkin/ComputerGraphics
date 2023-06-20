@@ -18,12 +18,9 @@ struct Triangolo {
     float velocity;
     float width, height;
     float direction;
-    float colorR, colorG, colorB;
 
-    Triangolo(float _x, float _y, float _velocity, float _width, float _height, float _direction,
-        float _colorR, float _colorG, float _colorB)
-        : x(_x), y(_y), velocity(_velocity), width(_width), height(_height), direction(_direction),
-        colorR(_colorR), colorG(_colorG), colorB(_colorB) {}
+    Triangolo(float _x, float _y, float _velocity, float _width, float _height, float _direction)
+        : x(_x), y(_y), velocity(_velocity), width(_width), height(_height), direction(_direction) {}
 };
 
 std::vector<Triangolo> triangoli;
@@ -41,9 +38,6 @@ void generaTriangolo() {
     float velocity = (static_cast<float>(rand()) / RAND_MAX) * 0.02f + 0.01f;
     float width = (static_cast<float>(rand()) / RAND_MAX) * TRIANGOLO_SIZE;
     float direction = (static_cast<float>(rand()) / RAND_MAX) * 0.01;
-    float colorR = (static_cast<float>(rand()) / RAND_MAX);
-    float colorG = (static_cast<float>(rand()) / RAND_MAX);
-    float colorB = (static_cast<float>(rand()) / RAND_MAX);
 
     // Assicurati che la larghezza del triangolo sia maggiore o uguale alla misura minima
     width = std::max(width, TRIANGOLO_MIN_SIZE);
@@ -51,7 +45,7 @@ void generaTriangolo() {
 
     float height = width * 2.0f; // Triangolo isoscele con la punta verso il basso
     float y = 1.0f + height; // Coordinate y al di sopra dello schermo
-    triangoli.push_back(Triangolo(x, y, velocity, width, height, direction, colorR, colorG, colorB));
+    triangoli.push_back(Triangolo(x, y, velocity, width, height, direction));
 }
 
 void collisionDetection() {
@@ -145,21 +139,15 @@ void initializeVaoVbo() {
     glBindBuffer(GL_ARRAY_BUFFER, triangoloVbo);
 
     GLfloat triangoloVertices[] = {
-        -0.5f, 0.0f, // Vertice 1
-        1.0f, 0.0f, 0.0f, // Colore Vertice 1 (Rosso)
-        0.5f, 0.0f, // Vertice 2
-        0.0f, 1.0f, 0.0f, // Colore Vertice 2 (Verde)
-        0.0f, -1.0f, // Vertice 3
-        0.0f, 0.0f, 1.0f // Colore Vertice 3 (Blu)
+        -0.5f, 0.0f,
+        0.5f, 0.0f,
+        0.0f, -1.0f
     };
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(triangoloVertices), triangoloVertices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 void display() {
@@ -171,11 +159,11 @@ void display() {
     glDrawArrays(GL_QUADS, 0, 4);
 
     glBindVertexArray(triangoloVao);
+    glColor3f(0.6f, 0.3f, 0.0f);
     for (const auto& triangolo : triangoli) {
         glLoadIdentity();
         glTranslatef(triangolo.x, triangolo.y, 0.0f);
         glScalef(triangolo.width, triangolo.height, 1.0f);
-
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
@@ -183,7 +171,6 @@ void display() {
 
     glutSwapBuffers();
 }
-
 
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
