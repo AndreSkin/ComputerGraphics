@@ -1,447 +1,219 @@
+#include <GL/glew.h>
 #include <GL/glut.h>
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>
 #include <iostream>
-#include <string>
-#include <cstdlib>
+#include <vector>
+#include <random>
 
-#define MAX_TRIANGLES 8 // Numero massimo di triangoli
-#define TRIANGLE_SIZE 60 // Dimensione massima triangoli
-#define MAX_PARTICLES 50 //Numero massimo particelle
-#define SQUARE_SIZE 30 // Dimensione del quadrato
-#define WINDOW_SIZE 400 // Dimensioni della finestra
-#define PI 3.14159265358979323846
+const int MAX_TRIANGOLI = 8;
+const float QUADRATO_SPEED = 0.05f;
+const float TRIANGOLO_SIZE = 0.2f; // Dimensione massima dei triangoli
+const float TRIANGOLO_MIN_SIZE = 0.05f; // Misura minima dei triangoli
+const float TRIANGOLO_MAX_H_VELOCITY = 0.05f;
 
-using namespace std;
+int punteggio = 0;
+bool game_over = false;
 
-// Triangoli
-typedef struct 
-{
-    float x;
-    float y;
-    float size;
-    float xVelocity;
-    float yVelocity;
-} Triangle;
+struct Triangolo {
+    float x, y;
+    float velocity;
+    float width, height;
+    float direction;
 
-// Particelle
-typedef struct 
-{
-    float x;
-    float y;
-    float xVelocity;
-    float yVelocity;
-} Particle;
+    Triangolo(float _x, float _y, float _velocity, float _width, float _height, float _direction)
+        : x(_x), y(_y), velocity(_velocity), width(_width), height(_height), direction(_direction) {}
+};
 
-bool debug = false; // Attiva debug mode (mostra bordi rossi)
-bool showHitbox = false; // Indica se mostrare la hitbox dei triangoli e del quadrato
-bool gameOver = false; // Indica se il gioco è terminato
-bool paused = false; // Indica se il gioco è in pausa
+std::vector<Triangolo> triangoli;
 
-Triangle triangles[MAX_TRIANGLES];
-int numTriangles = 0; // Numero di triangoli attualmente in gioco
-const float triangleXVelocity = 0.2; // Velocità orizzontale dei triangoli
-const int minTriangleSize = 15; // Dimensione minima dei triangolo
+float quadratoX = 0.0f;
+float quadratoY = -0.9f;
+const float quadratoWidth = 0.1f;
+const float quadratoHeight = 0.1f;
 
-float squareX = WINDOW_SIZE / 2; // Coordinata x del quadrato
-float squareY = SQUARE_SIZE / 2; // Coordinata y del quadrato
-const int platform_y = 20; // Coordinata y della piattaforma
+GLuint quadratoVao, triangoloVao;
+GLuint quadratoVbo, triangoloVbo;
 
-int score = 0; // Punteggio del giocatore
-float dropVelocity = 1; // Velocità di caduta base dei triangoli
-const int recall_timer = 15; //Ogni quanto aggiornare lo stato
-const int winScore = 500; // Punti per vincere
+void generaTriangolo() {
+    float x = (static_cast<float>(rand()) / RAND_MAX) * 2.0f - 1.0f;
+    float velocity = (static_cast<float>(rand()) / RAND_MAX) * 0.02f + 0.01f;
+    float width = (static_cast<float>(rand()) / RAND_MAX) * TRIANGOLO_SIZE;
+    float direction = (static_cast<float>(rand()) / RAND_MAX) * 0.01;
 
-Particle particles[MAX_PARTICLES];
+    // Assicurati che la larghezza del triangolo sia maggiore o uguale alla misura minima
+    width = std::max(width, TRIANGOLO_MIN_SIZE);
+    direction = std::min(direction, TRIANGOLO_MAX_H_VELOCITY);
 
-//Prototipi
-void drawSfondo();
-void initTriangles();
-void drawTriangle(Triangle t);
-Triangle restoreTriangle(Triangle t);
-void updateTriangles(int value);
-void drawSquare();
-void initParticles();
-void updateParticles();
-void drawParticles();
-void drawScore();
-void display();
-void update_scene(int value);
-void keyboard(unsigned char key, int x, int y);
+    float height = width * 2.0f; // Triangolo isoscele con la punta verso il basso
+    float y = 1.0f + height; // Coordinate y al di sopra dello schermo
+    triangoli.push_back(Triangolo(x, y, velocity, width, height, direction));
+}
 
-void drawSfondo()
-{
-    // Disegna cerchi concentrici sullo sfondo
-    float radius = WINDOW_SIZE; // Imposta il raggio iniziale del cerchio più grande
-    float modifier = 1.0; // Imposta il modificatore di colore iniziale
-    float yOffset = 0; // Imposta l'offset y iniziale
-    while (radius > 0)
-    {
-        // Imposta il colore del cerchio (HEX #7E5429 ; RGB(126, 84, 41))
-        glColor4f(0.5 * modifier, 0.33 * modifier, 0.16 * modifier, 1.0); 
-
-        glBegin(GL_TRIANGLE_FAN);
-        // Imposta il centro del cerchio al centro della finestra di gioco e all'offset y corrente
-        glVertex2f(WINDOW_SIZE / 2, WINDOW_SIZE / 2 - yOffset); 
-        for (int i = 0; i <= 360; i++)
-        { // Per ogni grado da 0 a 360 aggiunge un vertice al cerchio
-            glVertex2f(WINDOW_SIZE / 2 + radius * cos(i * PI / 180), WINDOW_SIZE / 2 - yOffset + radius * sin(i * PI / 180));
+void collisionDetection() {
+    for (auto it = triangoli.begin(); it != triangoli.end();) {
+        if (it->y <= quadratoY + quadratoHeight && it->y >= quadratoY &&
+            it->x <= quadratoX + quadratoWidth && it->x >= quadratoX) {
+            game_over = true;
+            break;
         }
-        glEnd();
+        else if (it->y < -1.0f) {
+            it->y = 1.0f + it->height; // Riporta il triangolo sopra lo schermo
+            punteggio += 10;;
+            continue;
+        }
+        ++it;
+    }
+}
 
-        radius -= 15; // Riduce il raggio del cerchio successivo
-        modifier -= 0.035; // Riduce il modificatore di colore del cerchio successivo
-        yOffset += 10; // Aumenta l'offset y del cerchio successivo
-
-        if (debug)
-        { // Se sono in debug mode
-            glColor3f(1.0, 0.0, 0.0); // Imposta il colore del contorno a rosso
-            glBegin(GL_LINE_LOOP);
-            for (int i = 0; i <= 360; i++)
-            {
-                glVertex2f(WINDOW_SIZE / 2 + radius * cos(i * PI / 180), WINDOW_SIZE / 2 - yOffset + radius * sin(i * PI / 180));
+void update(int value) {
+    if (!game_over) {
+        for (auto& triangolo : triangoli) {
+            triangolo.y -= triangolo.velocity;
+            triangolo.x += triangolo.direction;
+            if (triangolo.x >= 1.0f || triangolo.x <= -1.0f) {
+                triangolo.direction = -triangolo.direction;
             }
-            glEnd();
-        }
-    }
-}
-
-// Funzione per inizializzare i triangoli
-void initTriangles() 
-{
-    srand(time(0)); // Inizializza il generatore di numeri casuali
-    for (int i = 0; i < MAX_TRIANGLES; i++) 
-    {
-        triangles[i].x = rand() % (WINDOW_SIZE - TRIANGLE_SIZE) + TRIANGLE_SIZE / 2; // Imposta la coordinata x del triangolo in modo casuale
-        triangles[i].y = WINDOW_SIZE + TRIANGLE_SIZE / 2; // Imposta la coordinata y del triangolo al di sopra della finestra di gioco
-        triangles[i].size = rand() % TRIANGLE_SIZE + minTriangleSize; // Imposta la dimensione del triangolo in modo casuale
-        triangles[i].xVelocity = rand() % 2 == 0 ? triangleXVelocity : -1 * triangleXVelocity; // Imposta la velocità orizzontale del triangolo
-        triangles[i].yVelocity = rand() % 5; // Imposta la velocità verticale del triangolo in modo casuale
-    }
-}
-
-// Funzione per disegnare un triangolo sullo schermo
-void drawTriangle(Triangle t) 
-{
-    glBegin(GL_TRIANGLES);
-
-    // Imposta il colore del primo vertice a marrone chiaro (HEX #A18d6f ; RGB(161,141,111)
-    glColor4f(0.63, 0.55, 0.44, 1.0);
-    glVertex2f(t.x, t.y - t.size / 2); // Imposta il primo vertice del triangolo in basso al centro
-
-    // Marrone più scuro HEX #836357; RGB(131,99,87)
-    glColor4f(0.51, 0.39, 0.34, 1.0);
-    glVertex2f(t.x - t.size / 3, t.y + t.size / 2); // Imposta il secondo vertice del triangolo in alto a sinistra
-
-    // Marrone più scuro HEX #634B47 RGB(99,75,71)
-    glColor4f(0.39, 0.29, 0.28, 1.0);
-    glVertex2f(t.x + t.size / 3, t.y + t.size / 2); // Imposta il terzo vertice del triangolo in alto a destra
-
-    glEnd();
-
-    if (showHitbox) 
-    { 
-        glColor3f(1.0, 1.0, 1.0); // Imposta il colore della hitbox a bianco
-        glBegin(GL_LINES);
-        glVertex2f(t.x - 5, t.y); // Disegna una linea orizzontale al centro del triangolo
-        glVertex2f(t.x + 5, t.y); 
-        glVertex2f(t.x, t.y + 5); // Disegna una linea verticale al centro del triangolo
-        glVertex2f(t.x, t.y - 5); 
-        glEnd();
-    }
-
-    if (debug)
-    { 
-        glColor3f(1.0, 0.0, 0.0); // Imposta il colore del contorno a rosso
-        glBegin(GL_LINE_LOOP); 
-        glVertex2f(t.x, t.y - t.size / 2); // Imposta il primo vertice del contorno in basso al centro
-        glVertex2f(t.x - t.size / 3, t.y + t.size / 2); // Imposta il secondo vertice del contorno in alto a sinistra
-        glVertex2f(t.x + t.size / 3, t.y + t.size / 2); // Imposta il terzo vertice del contorno in alto a destra
-        glEnd();
-    }
-}
-
-Triangle restoreTriangle(Triangle t)
-{
-    t.x = rand() % (WINDOW_SIZE - TRIANGLE_SIZE) + TRIANGLE_SIZE / 2;
-    t.y = WINDOW_SIZE + TRIANGLE_SIZE / 2; 
-    t.size = rand() % TRIANGLE_SIZE + minTriangleSize; 
-    t.xVelocity = rand() % 2 == 0 ? triangleXVelocity : -1 * triangleXVelocity; 
-    t.yVelocity = rand() % 5;
-    return t;
-}
-
-void updateTriangles(int value)
-{
-    for (int i = 0; i < numTriangles; i++)
-    { // Per ogni triangolo in gioco
-        triangles[i].y -= (value + triangles[i].yVelocity); // Aggiorna la coordinata y del triangolo
-        triangles[i].x += triangles[i].xVelocity; // Aggiorna la coordinata x del triangolo
-
-        if ((triangles[i].x - triangles[i].size / 3 < 0) || (triangles[i].x + triangles[i].size / 3 > WINDOW_SIZE))
-        { // Se il triangolo tocca il bordo destro o sinistro della finestra di gioco
-            triangles[i].xVelocity = -triangles[i].xVelocity; // Inverti la velocità orizzontale del triangolo
         }
 
-        if (triangles[i].y < -1*TRIANGLE_SIZE / 2)
-        { // Se il triangolo esce dal bordo inferiore della finestra di gioco
-            score += 5; // Incrementa il punteggio del giocatore
-            triangles[i] = restoreTriangle(triangles[i]); // Ridefinisci il triangolo
+        collisionDetection();
+        // Genera nuovi triangoli se il numero corrente è inferiore al massimo
+        if (triangoli.size() < MAX_TRIANGOLI) {
+            generaTriangolo();
         }
 
-        // Se il triangolo collide con il quadrato
-        if ((triangles[i].x > squareX - SQUARE_SIZE / 2) && (triangles[i].x < squareX + SQUARE_SIZE / 2) && (triangles[i].y > squareY - SQUARE_SIZE / 2) && (triangles[i].y < squareY + SQUARE_SIZE / 2))
-        {
-            gameOver = true; // Termina il gioco
-        }
     }
+
+
+    if (punteggio >= 1000) {
+        game_over = true;
+    }
+
+    // Aggiorna la posizione del quadrato
+    if (quadratoX < -1.0f)
+        quadratoX = -1.0f;
+    else if (quadratoX > 1.0f - quadratoWidth)
+        quadratoX = 1.0f - quadratoWidth;
+
+    // Ridisegna il quadrato
+    glBindVertexArray(quadratoVao);
+    glBindBuffer(GL_ARRAY_BUFFER, quadratoVbo);
+
+    GLfloat quadratoVertices[] = {
+        quadratoX, quadratoY,
+        quadratoX + quadratoWidth, quadratoY,
+        quadratoX + quadratoWidth, quadratoY + quadratoHeight,
+        quadratoX, quadratoY + quadratoHeight
+    };
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadratoVertices), quadratoVertices, GL_STATIC_DRAW);
+
+    // Richiede il ridisegno della scena
+    glutPostRedisplay();
+    glutTimerFunc(16, update, 0);
 }
 
-// Funzione per disegnare il quadrato e la piattaforma sullo schermo
-void drawSquare()
-{
-    // Disegna la piattaforma
-    glColor3f(0.0, 0.0, 1.0); // Imposta il colore della piattaforma a blu
-    glBegin(GL_LINES);
-    glVertex2f(0, platform_y); // Imposta il primo punto della linea al bordo sinistro della finestra di gioco e alla coordinata y della piattaforma
-    glVertex2f(WINDOW_SIZE, platform_y); // Imposta il secondo punto della linea al bordo destro della finestra di gioco e alla coordinata y della piattaforma
-    glEnd();
+void initializeVaoVbo() {
+    // Inizializza il VAO e il VBO per il quadrato
+    glGenVertexArrays(1, &quadratoVao);
+    glBindVertexArray(quadratoVao);
 
-    // Disegna il quadrato
-    glColor3f(0.96, 0.73, 0.04); // Imposta il colore del quadrato a giallo (HEX #f6ba0a ; RGB(246,186,10))
-    glBegin(GL_POLYGON); 
-    glVertex2f(squareX - SQUARE_SIZE / 2, squareY - SQUARE_SIZE / 2 + 10); // Imposta il primo vertice del quadrato in basso a sinistra
-    glVertex2f(squareX + SQUARE_SIZE / 2, squareY - SQUARE_SIZE / 2 + 10); // Imposta il secondo vertice del quadrato in basso a destra
-    glVertex2f(squareX + SQUARE_SIZE / 2, squareY + SQUARE_SIZE / 2 + 10); // Imposta il terzo vertice del quadrato in alto a destra
-    glVertex2f(squareX - SQUARE_SIZE / 2, squareY + SQUARE_SIZE / 2 + 10); // Imposta il quarto vertice del quadrato in alto a sinistra
-    glEnd();
+    glGenBuffers(1, &quadratoVbo);
+    glBindBuffer(GL_ARRAY_BUFFER, quadratoVbo);
 
-    if (showHitbox)
-    { 
-        glColor3f(1.0, 1.0, 1.0); 
-        glBegin(GL_LINES); 
-        glVertex2f(squareX - 5, squareY + 10);
-        glVertex2f(squareX + 5, squareY + 10);
-        glVertex2f(squareX, squareY + 5 + 10); 
-        glVertex2f(squareX, squareY - 5 + 10);
-        glEnd();
-    }
+    GLfloat quadratoVertices[] = {
+        quadratoX, quadratoY,
+        quadratoX + quadratoWidth, quadratoY,
+        quadratoX + quadratoWidth, quadratoY + quadratoHeight,
+        quadratoX, quadratoY + quadratoHeight
+    };
 
-    if (debug)
-    { 
-        glColor3f(1.0, 0.0, 0.0); 
-        glBegin(GL_LINE_LOOP); 
-        glVertex2f(squareX - SQUARE_SIZE / 2, squareY - SQUARE_SIZE / 2 + 10); 
-        glVertex2f(squareX + SQUARE_SIZE / 2, squareY - SQUARE_SIZE / 2 + 10); 
-        glVertex2f(squareX + SQUARE_SIZE / 2, squareY + SQUARE_SIZE / 2 + 10); 
-        glVertex2f(squareX - SQUARE_SIZE / 2, squareY + SQUARE_SIZE / 2 + 10);
-        glEnd();
-    }
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadratoVertices), quadratoVertices, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+    // Inizializza il VAO e il VBO per il triangolo
+    glGenVertexArrays(1, &triangoloVao);
+    glBindVertexArray(triangoloVao);
+
+    glGenBuffers(1, &triangoloVbo);
+    glBindBuffer(GL_ARRAY_BUFFER, triangoloVbo);
+
+    GLfloat triangoloVertices[] = {
+        -0.5f, 0.0f,
+        0.5f, 0.0f,
+        0.0f, -1.0f
+    };
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangoloVertices), triangoloVertices, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
-void initParticles()
-{
-    for (int i = 0; i < MAX_PARTICLES; i++)
-    {
-        particles[i].x = rand() % WINDOW_SIZE; // Imposta la coordinata x della particella in modo casuale
-        particles[i].y = WINDOW_SIZE - 1; // Imposta la coordinata y della particella all'inizio della finestra di gioco
-        particles[i].xVelocity = 0.1; // Imposta la velocità orizzontale della particella
-        particles[i].yVelocity = rand() % 5 + 3; // Imposta la velocità verticale della particella in modo casuale
-    }
-}
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    glLoadIdentity();
 
-void drawParticles()
-{
-    // Marrone scuro HEX #634B47 RGB(99,75,71)
-    glColor4f(0.39, 0.29, 0.28, 1.0);
-    glPointSize(5.0); // Imposta la dimensione delle particelle
+    glBindVertexArray(quadratoVao);
+    glColor3f(1.0f, 1.0f, 0.0f);
+    glDrawArrays(GL_QUADS, 0, 4);
 
-    glBegin(GL_POINTS); // Inizia a disegnare le particelle
-
-    for (int i = 0; i < MAX_PARTICLES; i++)
-    {
-        glVertex2f(particles[i].x, particles[i].y); // Disegna la particella
+    glBindVertexArray(triangoloVao);
+    glColor3f(0.6f, 0.3f, 0.0f);
+    for (const auto& triangolo : triangoli) {
+        glLoadIdentity();
+        glTranslatef(triangolo.x, triangolo.y, 0.0f);
+        glScalef(triangolo.width, triangolo.height, 1.0f);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
-    glEnd();
-}
-
-void updateParticles()
-{
-    for (int i = 0; i < MAX_PARTICLES; i++)
-    {
-        particles[i].x += particles[i].xVelocity; // Aggiorna la posizione orizzontale della particella
-        particles[i].y -= particles[i].yVelocity; // Aggiorna la posizione verticale della particella
-
-        if (particles[i].y < 1) // Se la particella è uscita dalla finestra di gioco
-        {
-            particles[i].x = rand() % WINDOW_SIZE; // Imposta la coordinata x della particella in modo casuale
-            particles[i].y = WINDOW_SIZE - 1; // Imposta la coordinata y della particella all'inizio della finestra di gioco
-            particles[i].xVelocity = 0.1; // Imposta la velocità orizzontale della particella
-            particles[i].yVelocity = rand() % 5 + 3; // Imposta la velocità verticale della particella in modo casuale
-        }
-    }
-}
-
-// Funzione per disegnare il punteggio sullo schermo
-// https://stackoverflow.com/questions/2183270/what-is-the-easiest-way-to-print-text-to-screen-in-opengl
-void drawScore()
-{
-    string scoreText = "Punteggio: " + to_string(score); // Crea il testo del punteggio
-    glColor3f(1.0, 1.0, 1.0); // Imposta il colore del testo a bianco
-    glRasterPos2f(10, WINDOW_SIZE - 20); // Imposta la posizione del testo in alto a sinistra
-    for (char c : scoreText)
-    { // Per ogni carattere nel testo del punteggio
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c); // Disegna il carattere sullo schermo
-    }
-}
-
-// Funzione per disegnare il contenuto della finestra di gioco
-void display() 
-{
-    drawSfondo();
-
-    if (!gameOver) 
-    { // Se il gioco non è terminato
-        drawScore(); // Disegna il punteggio sullo schermo
-        drawSquare(); // Disegna il quadrato e la piattaforma sullo schermo
-        drawParticles();
-        for (int i = 0; i < numTriangles; i++) 
-        { // Per ogni triangolo in gioco
-            drawTriangle(triangles[i]); // Disegna il triangolo sullo schermo
-        }
-    }
+    std::cout << "Punteggio: " << punteggio << std::endl;
 
     glutSwapBuffers();
 }
 
-// Update della scena
-void update_scene(int value) 
-{
-    if (!paused)
-    {
-        if (!gameOver) 
-        { // Se il gioco non è terminato
-            updateTriangles(value);
-            dropVelocity += 0.001; // Incrementa il valore di dropVelocity (i triangoli scendono più velocemente)
-            if (score >= winScore)
-            {
-                cout << "HAI VINTO!"<< endl<<"Punteggio finale : " << score << endl;
-                exit(0); 
-            }
-        }
-        else // Se il gioco è terminato
-        {
-            cout << "Punteggio finale: " << score << endl;
-            exit(0); 
-        }
-        updateParticles(); // Aggiorna lo stato delle particelle
-        glutPostRedisplay();
-    }
-        glutTimerFunc(recall_timer, update_scene, dropVelocity);
-}
-
-void keyboard(unsigned char key, int x, int y) 
-{
-    // Trasla il quadrato
-    switch (key) 
-    {
+void keyboard(unsigned char key, int x, int y) {
+    switch (key) {
     case 'a':
-        if (!paused)
-        {
-            squareX -= SQUARE_SIZE;
-            if (squareX < SQUARE_SIZE / 2)
-            {
-                squareX = SQUARE_SIZE / 2;
-            }
-        }
-        break;
     case 'A':
-        if (!paused)
-        {
-            squareX -= SQUARE_SIZE;
-            if (squareX < SQUARE_SIZE / 2)
-            {
-                squareX = SQUARE_SIZE / 2;
-            }
-        }
+        quadratoX -= QUADRATO_SPEED;
         break;
     case 'd':
-        if (!paused)
-        {
-            squareX += SQUARE_SIZE;
-            if (squareX > WINDOW_SIZE - SQUARE_SIZE / 2)
-            {
-                squareX = WINDOW_SIZE - SQUARE_SIZE / 2;
-            }
-        }
-        break;
     case 'D':
-        if (!paused)
-        {
-            squareX += SQUARE_SIZE;
-            if (squareX > WINDOW_SIZE - SQUARE_SIZE / 2)
-            {
-                squareX = WINDOW_SIZE - SQUARE_SIZE / 2;
-            }
-        }
-        break;
-    // Mostra o nasconde le hitbox
-    case 'b':
-        showHitbox = !showHitbox;
-        break;
-    case 'B':
-        showHitbox = !showHitbox;
-        break;
-
-    // Attiva visualizzazione debug
-    case 's':
-        debug = !debug;
-        break;
-    case 'S':
-        debug = !debug;       
-        break;
-
-    // Attiva visualizzazione debug
-    case 'p':
-        paused = !paused;
-        break;
-    case 'P':
-        paused = !paused;
-        break;
-
-    // Esce dal gioco
-    case 27:
-        cout << "Punteggio finale: " << score << endl;
-        exit(0);
-        break;
-
-    default:
+        quadratoX += QUADRATO_SPEED;
         break;
     }
 }
 
-int main(int argc, char** argv)
-{
+
+void reshape(int width, int height) {
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+int main(int argc, char** argv) {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA); // Imposta display mode
-    glutInitWindowSize(WINDOW_SIZE, WINDOW_SIZE); // Imposta la dimensione della finestra di gioco
-    glutCreateWindow("Triangle rain"); // Crea la finestra di gioco
-    
-    //https://learn.microsoft.com/en-us/windows/win32/opengl/gluortho2d
-    gluOrtho2D(0, WINDOW_SIZE, 0, WINDOW_SIZE); // Imposta il sistema di coordinate della finestra di gioco
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(400, 400);
+    glutCreateWindow("TriangleRain");
 
-    squareY = platform_y + SQUARE_SIZE/2 - 10; // Imposta la coordinata y iniziale del quadrato al di sopra della piattaforma
-    numTriangles = MAX_TRIANGLES;
-    initTriangles(); // Inizializza i triangoli
-    initParticles(); // Inizializza le particelle
+    glewInit();
+    initializeVaoVbo();
 
-    glutDisplayFunc(display); 
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
-    glutTimerFunc(recall_timer, update_scene, 1); // Chiama update_scene(1)
+    glutTimerFunc(0, update, 0);
+
+    srand(static_cast<unsigned int>(time(0)));
+    for (int i = 0; i < MAX_TRIANGOLI; ++i) {
+        generaTriangolo();
+    }
 
     glutMainLoop();
-
     return 0;
 }

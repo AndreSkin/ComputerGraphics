@@ -1,0 +1,41 @@
+﻿  TriangleRain.cpp
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(44,33): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(82,57): warning C4244: 'argomento': conversione da 'double' a 'GLfloat'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(82,40): warning C4244: 'argomento': conversione da 'double' a 'GLfloat'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(82,23): warning C4244: 'argomento': conversione da 'double' a 'GLfloat'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(89,96): warning C4244: 'argomento': conversione da 'double' a 'GLfloat'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(89,40): warning C4244: 'argomento': conversione da 'double' a 'GLfloat'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(94,26): warning C4305: '-=': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(103,100): warning C4244: 'argomento': conversione da 'double' a 'GLfloat'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(103,44): warning C4244: 'argomento': conversione da 'double' a 'GLfloat'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(113,15): warning C4244: 'argomento': conversione da 'time_t' a 'unsigned int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(116,65): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(118,52): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(120,41): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(130,27): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(130,21): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(130,15): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(134,27): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(134,21): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(134,15): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(138,27): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(138,21): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(138,15): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(167,50): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(169,37): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(171,26): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(212,27): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(212,21): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(212,15): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(247,33): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(249,34): warning C4305: '=': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(250,45): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(257,27): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(257,21): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(257,15): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(279,37): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(281,38): warning C4305: '=': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(282,49): warning C4244: '=': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(327,34): warning C4305: '+=': troncamento da 'double' a 'float'
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\TriangleRain\TriangleRain.cpp(342,51): warning C4244: 'argomento': conversione da 'float' a 'int'. Possibile perdita di dati.
+  TriangleRain.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain_\x64\Debug\TriangleRain.exe
