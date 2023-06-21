@@ -15,7 +15,7 @@
 
 const int MAX_TRIANGOLI = 8;
 const float QUADRATO_SPEED = 0.05f;
-const float TRIANGOLO_SIZE = 0.2f; // Dimensione massima dei triangoli
+const float TRIANGOLO_SIZE = 0.27f; // Dimensione massima dei triangoli
 const float TRIANGOLO_MIN_SIZE = 0.05f; // Misura minima dei triangoli
 const float TRIANGOLO_MAX_H_VELOCITY = 0.05f;
 static unsigned int programId;
@@ -120,16 +120,16 @@ void update(int value) {
             // Aggiorna i dati di posizione del triangolo nell'array di vertici
             int index = i * 3 * (3 + 4);
             // Primo vertice
-            triangoloVertices[index] = triangolo.x - triangolo.width / 2;
-            triangoloVertices[index + 1] = triangolo.y - triangolo.height;
+            triangoloVertices[index + X] = triangolo.x - triangolo.width / 2;
+            triangoloVertices[index + Y] = triangolo.y ;
             // Secondo vertice
             index += (3 + 4);
-            triangoloVertices[index] = triangolo.x + triangolo.width / 2;
-            triangoloVertices[index + 1] = triangolo.y - triangolo.height;
+            triangoloVertices[index + X] = triangolo.x + triangolo.width / 2;
+            triangoloVertices[index + Y] = triangolo.y;
             // Terzo vertice
             index += (3 + 4);
-            triangoloVertices[index] = triangolo.x;
-            triangoloVertices[index + 1] = triangolo.y;
+            triangoloVertices[index + X] = triangolo.x;
+            triangoloVertices[index + Y] = triangolo.y - triangolo.height;
         }
 
         collisionDetection();
