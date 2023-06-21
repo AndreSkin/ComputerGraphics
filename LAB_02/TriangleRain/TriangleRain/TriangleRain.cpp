@@ -12,12 +12,13 @@
 #define A 6
 
 
-
 const int MAX_TRIANGOLI = 8;
 const float QUADRATO_SPEED = 0.05f;
 const float TRIANGOLO_SIZE = 0.27f; // Dimensione massima dei triangoli
 const float TRIANGOLO_MIN_SIZE = 0.05f; // Misura minima dei triangoli
 const float TRIANGOLO_MAX_H_VELOCITY = 0.05f;
+const int winscore = 1000;
+
 static unsigned int programId;
 bool paused = false;
 
@@ -103,16 +104,34 @@ void collisionDetection() {
             break;
         }
         else if (it->y < -1.0f) {
-            it->y = 1.0f + it->height; // Riporta il triangolo sopra lo schermo
-            punteggio += 10;;
-            continue;
+            punteggio += 10;
+            // Rimuovi il triangolo che ha oltrepassato il bordo inferiore
+            it = triangoli.erase(it);
+
+            // Genera un nuovo triangolo sopra lo schermo
+            float x = (static_cast<float>(rand()) / RAND_MAX) * 2.0f - 1.0f;
+            float velocity = (static_cast<float>(rand()) / RAND_MAX) * 0.02f + 0.01f;
+            float width = (static_cast<float>(rand()) / RAND_MAX) * TRIANGOLO_SIZE;
+            float direction = (static_cast<float>(rand()) / RAND_MAX) * 0.01;
+
+            // Assicurati che la larghezza del triangolo sia maggiore o uguale alla misura minima
+            width = std::max(width, TRIANGOLO_MIN_SIZE);
+            direction = std::min(direction, TRIANGOLO_MAX_H_VELOCITY);
+
+            float height = width * 2.0f; // Triangolo isoscele con la punta verso il basso
+            float y = 1.0f + height; // Coordinate y al di sopra dello schermo
+
+            triangoli.push_back(Triangolo(x, y, velocity, width, height, direction));
+
+            // Esci dal ciclo dopo aver generato il nuovo triangolo
+            break;
         }
         ++it;
     }
 }
 
 void update(int value) {
-    if (!paused)
+    if (!paused && !game_over)
     {
         if (!game_over) {
             for (int i = 0; i < triangoli.size(); i++) {
@@ -141,8 +160,10 @@ void update(int value) {
             collisionDetection();
         }
 
-        if (punteggio >= 1000) {
+        if (punteggio >= winscore) {
             game_over = true;
+            std::cout << "HAI VINTO!" << std::endl << "Punteggio finale : " << punteggio << std::endl;
+            exit(0);
         }
 
         // Aggiorna la posizione del quadrato
@@ -226,7 +247,7 @@ void initializeVaoVbo() {
 
 void display() {
 
-    if (!paused)
+    if (!paused && !game_over)
     {
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
@@ -238,6 +259,7 @@ void display() {
         glDrawArrays(GL_TRIANGLES, 0, MAX_TRIANGOLI * 3);
 
         std::cout << "Punteggio: " << punteggio << std::endl;
+
 
         glutSwapBuffers();
     }
