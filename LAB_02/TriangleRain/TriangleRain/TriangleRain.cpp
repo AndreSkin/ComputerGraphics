@@ -66,27 +66,30 @@ void generaTriangolo() {
     triangoloVertices[index + X] = x - width / 2;
     triangoloVertices[index + Y] = y;
     triangoloVertices[index + Z] = 0.0f;
-    triangoloVertices[index + R] = 1.0f;
-    triangoloVertices[index + G] = 0.0f;
-    triangoloVertices[index + B] = 0.0f;
+    // Imposta il colore del primo vertice a marrone chiaro (HEX #A18d6f ; RGB(161,141,111)
+    triangoloVertices[index + R] = 0.63f;
+    triangoloVertices[index + G] = 0.55f;
+    triangoloVertices[index + B] = 0.44f;
     triangoloVertices[index + A] = 1.0f;
     // Secondo vertice
     index += (3 + 4);
     triangoloVertices[index + X] = x + width / 2;
     triangoloVertices[index + Y] = y;
     triangoloVertices[index + Z] = 0.0f;
-    triangoloVertices[index + R] = 1.0f;
-    triangoloVertices[index + G] = 0.0f;
-    triangoloVertices[index + B] = 0.0f;
+    // Marrone più scuro HEX #836357; RGB(131,99,87)
+    triangoloVertices[index + R] = 0.51f;
+    triangoloVertices[index + G] = 0.39f;
+    triangoloVertices[index + B] = 0.44f;
     triangoloVertices[index + A] = 1.0f;
     // Terzo vertice
     index += (3 + 4);
     triangoloVertices[index + X] = x;
     triangoloVertices[index + Y] = y-height;
     triangoloVertices[index + Z] = 0.0f;
-    triangoloVertices[index + R] = 1.0f;
-    triangoloVertices[index + G] = 0.0f;
-    triangoloVertices[index + B] = 0.0f;
+    // Marrone più scuro HEX #634B47 RGB(99,75,71)
+    triangoloVertices[index + R] = 0.39f;
+    triangoloVertices[index + G] = 0.29f;
+    triangoloVertices[index + B] = 0.28f;
     triangoloVertices[index + A] = 1.0f;
 }
 
@@ -133,10 +136,6 @@ void update(int value) {
         }
 
         collisionDetection();
-        // Genera nuovi triangoli se il numero corrente è inferiore al massimo
-        //if (triangoli.size() < MAX_TRIANGOLI) {
-        //    generaTriangolo();
-        //}
     }
 
     if (punteggio >= 1000) {
@@ -150,10 +149,10 @@ void update(int value) {
         quadratoX = 1.0f - quadratoWidth;
 
     GLfloat quadratoVertices[] = {
-        quadratoX, quadratoY, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // vertice in basso a sinistra
-        quadratoX + quadratoWidth, quadratoY, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f, // vertice in basso a destra
-        quadratoX + quadratoWidth, quadratoY + quadratoHeight, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f, // vertice in alto a destra
-        quadratoX, quadratoY + quadratoHeight, 0.0f,   1.0f, 1.0f, 0.0f, 1.0f // vertice in alto a sinistra
+        quadratoX, quadratoY, 0.0f,     0.96f, 0.73f, 0.04f, 1.0f, // vertice in basso a sinistra
+        quadratoX + quadratoWidth, quadratoY, 0.0f,   1.00f, 0.85f, 0.00f, 1.0f,// vertice in basso a destra
+        quadratoX + quadratoWidth, quadratoY + quadratoHeight, 0.0f,   0.96f, 0.73f, 0.04f, 1.0f, // vertice in alto a destra
+        quadratoX, quadratoY + quadratoHeight, 0.0f,   1.00f, 0.85f, 0.00f, 1.0f // vertice in alto a sinistra
     };
 
     glBindBuffer(GL_ARRAY_BUFFER, quadratoVbo);
@@ -209,7 +208,7 @@ void initializeVaoVbo() {
     glEnableVertexAttribArray(1);
 
     //set background color
-    glClearColor(1.0, 0.5, 0.0, 1.0);
+    //glClearColor(1.0, 0.5, 0.0, 1.0);
 }
 
 
