@@ -18,8 +18,16 @@
     <ClCompile Include="TriangleRain.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderMaker.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ShaderMaker.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
