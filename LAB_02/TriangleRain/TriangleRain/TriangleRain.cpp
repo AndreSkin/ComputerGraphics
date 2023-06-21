@@ -19,6 +19,7 @@ const float TRIANGOLO_SIZE = 0.27f; // Dimensione massima dei triangoli
 const float TRIANGOLO_MIN_SIZE = 0.05f; // Misura minima dei triangoli
 const float TRIANGOLO_MAX_H_VELOCITY = 0.05f;
 static unsigned int programId;
+bool paused = false;
 
 int punteggio = 0;
 bool game_over = false;
@@ -111,56 +112,66 @@ void collisionDetection() {
 }
 
 void update(int value) {
-    if (!game_over) {
-        for (int i = 0; i < triangoli.size(); i++) {
-            auto& triangolo = triangoli[i];
-            triangolo.y -= triangolo.velocity;
-            triangolo.x += triangolo.direction;
-            if (triangolo.x >= 1.0f || triangolo.x <= -1.0f) {
-                triangolo.direction = -triangolo.direction;
+    if (!paused)
+    {
+        if (!game_over) {
+            for (int i = 0; i < triangoli.size(); i++) {
+                auto& triangolo = triangoli[i];
+                triangolo.y -= triangolo.velocity;
+                triangolo.x += triangolo.direction;
+                if (triangolo.x >= 1.0f || triangolo.x <= -1.0f) {
+                    triangolo.direction = -triangolo.direction;
+                }
+
+                // Aggiorna i dati di posizione del triangolo nell'array di vertici
+                int index = i * 3 * (3 + 4);
+                // Primo vertice
+                triangoloVertices[index + X] = triangolo.x - triangolo.width / 2;
+                triangoloVertices[index + Y] = triangolo.y;
+                // Secondo vertice
+                index += (3 + 4);
+                triangoloVertices[index + X] = triangolo.x + triangolo.width / 2;
+                triangoloVertices[index + Y] = triangolo.y;
+                // Terzo vertice
+                index += (3 + 4);
+                triangoloVertices[index + X] = triangolo.x;
+                triangoloVertices[index + Y] = triangolo.y - triangolo.height;
             }
 
-            // Aggiorna i dati di posizione del triangolo nell'array di vertici
-            int index = i * 3 * (3 + 4);
-            // Primo vertice
-            triangoloVertices[index + X] = triangolo.x - triangolo.width / 2;
-            triangoloVertices[index + Y] = triangolo.y ;
-            // Secondo vertice
-            index += (3 + 4);
-            triangoloVertices[index + X] = triangolo.x + triangolo.width / 2;
-            triangoloVertices[index + Y] = triangolo.y;
-            // Terzo vertice
-            index += (3 + 4);
-            triangoloVertices[index + X] = triangolo.x;
-            triangoloVertices[index + Y] = triangolo.y - triangolo.height;
+            collisionDetection();
         }
 
-        collisionDetection();
+        if (punteggio >= 1000) {
+            game_over = true;
+        }
+
+        // Aggiorna la posizione del quadrato
+        if (quadratoX < -1.0f)
+            quadratoX = -1.0f;
+        else if (quadratoX > 1.0f - quadratoWidth)
+            quadratoX = 1.0f - quadratoWidth;
+
+        GLfloat quadratoVertices[] = {
+            quadratoX, quadratoY, 0.0f,// vertice in basso a sinistra
+            0.96f, 0.73f, 0.04f, 1.0f, // Giallo (HEX #f6ba0a ; RGB(246,186,10))
+
+            quadratoX + quadratoWidth, quadratoY, 0.0f, // vertice in basso a destra 
+            1.00f, 0.85f, 0.00f, 1.0f, // Giallo (HEX #FFD700  ; RGB(255, 215, 0))
+
+            quadratoX + quadratoWidth, quadratoY + quadratoHeight, 0.0f,// vertice in alto a destra
+            0.96f, 0.73f, 0.04f, 1.0f, // Giallo (HEX #f6ba0a ; RGB(246,186,10))
+
+            quadratoX, quadratoY + quadratoHeight, 0.0f,// vertice in alto a sinistra
+            1.00f, 0.85f, 0.00f, 1.0f // Giallo (HEX #FFD700  ; RGB(255, 215, 0))
+        };
+
+        glBindBuffer(GL_ARRAY_BUFFER, quadratoVbo);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadratoVertices), quadratoVertices);
+
+        glBindBuffer(GL_ARRAY_BUFFER, triangoloVbo);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(triangoloVertices), triangoloVertices);
+
     }
-
-    if (punteggio >= 1000) {
-        game_over = true;
-    }
-
-    // Aggiorna la posizione del quadrato
-    if (quadratoX < -1.0f)
-        quadratoX = -1.0f;
-    else if (quadratoX > 1.0f - quadratoWidth)
-        quadratoX = 1.0f - quadratoWidth;
-
-    GLfloat quadratoVertices[] = {
-        quadratoX, quadratoY, 0.0f,     0.96f, 0.73f, 0.04f, 1.0f, // vertice in basso a sinistra
-        quadratoX + quadratoWidth, quadratoY, 0.0f,   1.00f, 0.85f, 0.00f, 1.0f,// vertice in basso a destra
-        quadratoX + quadratoWidth, quadratoY + quadratoHeight, 0.0f,   0.96f, 0.73f, 0.04f, 1.0f, // vertice in alto a destra
-        quadratoX, quadratoY + quadratoHeight, 0.0f,   1.00f, 0.85f, 0.00f, 1.0f // vertice in alto a sinistra
-    };
-
-    glBindBuffer(GL_ARRAY_BUFFER, quadratoVbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadratoVertices), quadratoVertices);
-
-    glBindBuffer(GL_ARRAY_BUFFER, triangoloVbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(triangoloVertices), triangoloVertices);
-
     // Richiede il ridisegno della scena
     glutPostRedisplay();
     glutTimerFunc(16, update, 0);
@@ -214,18 +225,22 @@ void initializeVaoVbo() {
 
 
 void display() {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glLoadIdentity();
 
-    glBindVertexArray(quadratoVao);
-    glDrawArrays(GL_QUADS, 0, 4);
+    if (!paused)
+    {
+        glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity();
 
-    glBindVertexArray(triangoloVao);
-    glDrawArrays(GL_TRIANGLES, 0, MAX_TRIANGOLI * 3);
+        glBindVertexArray(quadratoVao);
+        glDrawArrays(GL_QUADS, 0, 4);
 
-    std::cout << "Punteggio: " << punteggio << std::endl;
+        glBindVertexArray(triangoloVao);
+        glDrawArrays(GL_TRIANGLES, 0, MAX_TRIANGOLI * 3);
 
-    glutSwapBuffers();
+        std::cout << "Punteggio: " << punteggio << std::endl;
+
+        glutSwapBuffers();
+    }
 }
 
 
@@ -233,14 +248,39 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case 'a':
     case 'A':
-        quadratoX -= QUADRATO_SPEED;
+        if (!paused)
+        {
+            quadratoX -= QUADRATO_SPEED;
+        }
+
         break;
     case 'd':
     case 'D':
-        quadratoX += QUADRATO_SPEED;
+        if (!paused)
+        {
+            quadratoX += QUADRATO_SPEED;
+        }       
+        break;
+
+        // Attiva visualizzazione debug
+    case 'p':
+        paused = !paused;
+        break;
+    case 'P':
+        paused = !paused;
+        break;
+
+        // Esce dal gioco
+    case 27:
+        cout << "Punteggio finale: " << punteggio << endl;
+        exit(0);
+        break;
+
+    default:
         break;
     }
-}
+ }
+
 
 
 void reshape(int width, int height) {
