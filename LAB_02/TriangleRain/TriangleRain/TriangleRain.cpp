@@ -10,6 +10,7 @@
 #define G 4
 #define B 5
 #define A 6
+#define M_PI 3.1415
 
 
 const int MAX_TRIANGOLI = 8;
@@ -47,6 +48,14 @@ GLfloat triangoloVertices[MAX_TRIANGOLI * 3 * (3 + 4)];
 
 GLuint quadratoVao, triangoloVao;
 GLuint quadratoVbo, triangoloVbo;
+GLuint circleVao, circleVbo;
+
+
+const int NUM_CIRCLES = 5;
+const float WINDOW_SIZE = 2.0f;
+std::vector<float> circleVertices;
+float circleRadius = WINDOW_SIZE / 2.0f;
+float circleOffset = circleRadius / NUM_CIRCLES;
 
 Triangolo generaTriangolo()
 {
@@ -196,6 +205,40 @@ void update(int value) {
 
 
 void initializeVaoVbo() {
+    for (int i = NUM_CIRCLES - 1; i >= 0; --i) {
+        float radius = circleRadius - i * circleOffset;
+        int numSegments = static_cast<int>(2 * M_PI * radius * 20);
+        float angleIncrement = 2 * M_PI / numSegments;
+
+        for (int j = 0; j < numSegments; ++j) {
+            float angle = j * angleIncrement;
+            float x = radius * cos(angle);
+            float y = radius * sin(angle);
+            float darkness = 1.0f - (static_cast<float>(i) / NUM_CIRCLES);  // Calcola il valore di buio in base all'indice i
+            circleVertices.push_back(x);
+            circleVertices.push_back(y);
+            circleVertices.push_back(0.0f);
+            circleVertices.push_back(darkness);
+            circleVertices.push_back(0.0f);
+            circleVertices.push_back(0.0f);
+            circleVertices.push_back(1.0f);
+        }
+    }
+    glGenVertexArrays(1, &circleVao);
+    glBindVertexArray(circleVao);
+
+    glGenBuffers(1, &circleVbo);
+    glBindBuffer(GL_ARRAY_BUFFER, circleVbo);
+    glBufferData(GL_ARRAY_BUFFER, circleVertices.size() * sizeof(float), circleVertices.data(), GL_STATIC_DRAW);
+
+    // Configura l'attributo posizione
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Configura gli attributi per il colore e il buio
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
 
     GLfloat quadratoVertices[] = {
         quadratoX, quadratoY, 0.0f,// vertice in basso a sinistra
@@ -254,6 +297,15 @@ void display() {
     {
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
+
+        glBindVertexArray(circleVao);
+        for (int i = 0; i < NUM_CIRCLES; ++i) {
+            int offset = i * static_cast<int>(2 * M_PI * (circleRadius - i * circleOffset) * 20);
+            int numSegments = static_cast<int>(2 * M_PI * (circleRadius - i * circleOffset) * 20);
+            glDrawArrays(GL_LINE_LOOP, offset, numSegments);
+        }
+
+
 
         glBindVertexArray(quadratoVao);
         glDrawArrays(GL_QUADS, 0, 4);
