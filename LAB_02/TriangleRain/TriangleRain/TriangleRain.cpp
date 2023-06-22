@@ -48,7 +48,8 @@ GLfloat triangoloVertices[MAX_TRIANGOLI * 3 * (3 + 4)];
 GLuint quadratoVao, triangoloVao;
 GLuint quadratoVbo, triangoloVbo;
 
-void generaTriangolo() {
+Triangolo generaTriangolo()
+{
     float x = (static_cast<float>(rand()) / RAND_MAX) * 2.0f - 1.0f;
     float velocity = (static_cast<float>(rand()) / RAND_MAX) * 0.02f + 0.01f;
     float width = (static_cast<float>(rand()) / RAND_MAX) * TRIANGOLO_SIZE;
@@ -60,13 +61,21 @@ void generaTriangolo() {
 
     float height = width * 2.0f; // Triangolo isoscele con la punta verso il basso
     float y = 1.0f + height; // Coordinate y al di sopra dello schermo
-    triangoli.push_back(Triangolo(x, y, velocity, width, height, direction));
+
+    return Triangolo(x, y, velocity, width, height, direction);
+}
+
+
+void generaTriangoli() {
+
+    Triangolo T = generaTriangolo();
+    triangoli.push_back(T);
 
     // Aggiungi i dati del triangolo all'array di vertici
     int index = (triangoli.size() - 1) * 3 * (3 + 4);
     // Primo vertice
-    triangoloVertices[index + X] = x - width / 2;
-    triangoloVertices[index + Y] = y;
+    triangoloVertices[index + X] = T.x - T.width / 2;
+    triangoloVertices[index + Y] = T.y;
     triangoloVertices[index + Z] = 0.0f;
     // Imposta il colore del primo vertice a marrone chiaro (HEX #A18d6f ; RGB(161,141,111)
     triangoloVertices[index + R] = 0.63f;
@@ -75,8 +84,8 @@ void generaTriangolo() {
     triangoloVertices[index + A] = 1.0f;
     // Secondo vertice
     index += (3 + 4);
-    triangoloVertices[index + X] = x + width / 2;
-    triangoloVertices[index + Y] = y;
+    triangoloVertices[index + X] = T.x + T.width / 2;
+    triangoloVertices[index + Y] = T.y;
     triangoloVertices[index + Z] = 0.0f;
     // Marrone più scuro HEX #836357; RGB(131,99,87)
     triangoloVertices[index + R] = 0.51f;
@@ -85,8 +94,8 @@ void generaTriangolo() {
     triangoloVertices[index + A] = 1.0f;
     // Terzo vertice
     index += (3 + 4);
-    triangoloVertices[index + X] = x;
-    triangoloVertices[index + Y] = y-height;
+    triangoloVertices[index + X] = T.x;
+    triangoloVertices[index + Y] = T.y - T.height;
     triangoloVertices[index + Z] = 0.0f;
     // Marrone più scuro HEX #634B47 RGB(99,75,71)
     triangoloVertices[index + R] = 0.39f;
@@ -108,20 +117,7 @@ void collisionDetection() {
             // Rimuovi il triangolo che ha oltrepassato il bordo inferiore
             it = triangoli.erase(it);
 
-            // Genera un nuovo triangolo sopra lo schermo
-            float x = (static_cast<float>(rand()) / RAND_MAX) * 2.0f - 1.0f;
-            float velocity = (static_cast<float>(rand()) / RAND_MAX) * 0.02f + 0.01f;
-            float width = (static_cast<float>(rand()) / RAND_MAX) * TRIANGOLO_SIZE;
-            float direction = (static_cast<float>(rand()) / RAND_MAX) * 0.01;
-
-            // Assicurati che la larghezza del triangolo sia maggiore o uguale alla misura minima
-            width = std::max(width, TRIANGOLO_MIN_SIZE);
-            direction = std::min(direction, TRIANGOLO_MAX_H_VELOCITY);
-
-            float height = width * 2.0f; // Triangolo isoscele con la punta verso il basso
-            float y = 1.0f + height; // Coordinate y al di sopra dello schermo
-
-            triangoli.push_back(Triangolo(x, y, velocity, width, height, direction));
+            triangoli.push_back(generaTriangolo());
 
             // Esci dal ciclo dopo aver generato il nuovo triangolo
             break;
@@ -202,10 +198,17 @@ void update(int value) {
 void initializeVaoVbo() {
 
     GLfloat quadratoVertices[] = {
-        quadratoX, quadratoY, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // vertice in basso a sinistra
-        quadratoX + quadratoWidth, quadratoY, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f, // vertice in basso a destra
-        quadratoX + quadratoWidth, quadratoY + quadratoHeight, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f, // vertice in alto a destra
-        quadratoX, quadratoY + quadratoHeight, 0.0f,   1.0f, 1.0f, 0.0f, 1.0f // vertice in alto a sinistra
+        quadratoX, quadratoY, 0.0f,// vertice in basso a sinistra
+        0.96f, 0.73f, 0.04f, 1.0f, // Giallo (HEX #f6ba0a ; RGB(246,186,10))
+
+        quadratoX + quadratoWidth, quadratoY, 0.0f, // vertice in basso a destra 
+        1.00f, 0.85f, 0.00f, 1.0f, // Giallo (HEX #FFD700  ; RGB(255, 215, 0))
+
+        quadratoX + quadratoWidth, quadratoY + quadratoHeight, 0.0f,// vertice in alto a destra
+        0.96f, 0.73f, 0.04f, 1.0f, // Giallo (HEX #f6ba0a ; RGB(246,186,10))
+
+        quadratoX, quadratoY + quadratoHeight, 0.0f,// vertice in alto a sinistra
+        1.00f, 0.85f, 0.00f, 1.0f // Giallo (HEX #FFD700  ; RGB(255, 215, 0))
     };
 
     // Inizializza il VAO e il VBO per il quadrato
@@ -284,7 +287,6 @@ void keyboard(unsigned char key, int x, int y) {
         }       
         break;
 
-        // Attiva visualizzazione debug
     case 'p':
         paused = !paused;
         break;
@@ -344,7 +346,7 @@ int main(int argc, char** argv) {
 
     srand(static_cast<unsigned int>(time(0)));
     for (int i = 0; i < MAX_TRIANGOLI; ++i) {
-        generaTriangolo();
+        generaTriangoli();
     }
 
     glutMainLoop();
