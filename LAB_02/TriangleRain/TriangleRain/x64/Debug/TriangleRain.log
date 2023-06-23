@@ -1,5 +1,5 @@
 ﻿  TriangleRain.cpp
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(69,30): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(116,21): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(143,19): warning C4267: 'inizializzazione': conversione da 'size_t' a 'int'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(84,30): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(132,21): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(160,19): warning C4267: 'inizializzazione': conversione da 'size_t' a 'int'. Possibile perdita di dati.
   TriangleRain.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\x64\Debug\TriangleRain.exe
