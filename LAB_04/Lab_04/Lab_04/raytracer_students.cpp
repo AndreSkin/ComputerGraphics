@@ -131,7 +131,7 @@ RayTracer::TraceRay (Ray & ray, Hit & hit, int bounce_count) const
 
 	  //SOFT SHADOWS
 	  if (args->softShadow) {
-		  int hMAX = 600;
+		  int hMAX = 200;
 		  for (int h = 0; h < hMAX; h++) {
 			  new_hit = new Hit();
 			  pointOnLight = f->RandomPoint();			//scelta casuale di un punto nell'area della luce
