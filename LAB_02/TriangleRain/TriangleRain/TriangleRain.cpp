@@ -23,12 +23,12 @@ float circleRadius = WINDOW_SIZE * 1.5; //Raggio del primo cerchio
 const int MAX_TRIANGOLI = 8; //Numero massimo di triangoli
 const float TRIANGOLO_MAX_SIZE = 0.25f; //Dimensione massima dei triangoli
 const float TRIANGOLO_MIN_SIZE = 0.05f; //Misura minima dei triangoli
-const float TRIANGOLO_MAX_H_VELOCITY = 0.05f; //Massima velocità orizzontale dei triangoli
+const float TRIANGOLO_MAX_H_VELOCITY = 0.02f; //Massima velocità orizzontale dei triangoli
 
 const float QUADRATO_SPEED = 0.08f; //Velocità del giocatore
 //Posizione iniziale del giocatore
 float quadratoX = 0.0f; 
-float quadratoY = -0.9f;
+float quadratoY = -0.98f;
 //Dimensioni del giocatore
 const float quadratoWidth = 0.15f;
 const float quadratoHeight = 0.15f;
