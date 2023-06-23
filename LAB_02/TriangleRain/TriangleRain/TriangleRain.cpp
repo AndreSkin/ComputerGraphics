@@ -19,12 +19,16 @@ const float TRIANGOLO_SIZE = 0.27f; // Dimensione massima dei triangoli
 const float TRIANGOLO_MIN_SIZE = 0.05f; // Misura minima dei triangoli
 const float TRIANGOLO_MAX_H_VELOCITY = 0.05f;
 const int winscore = 1000;
+const int MAX_NUM_CIRCLES = 25;
+const float WINDOW_SIZE = 2.0f;
 
 static unsigned int programId;
 bool paused = false;
 
+int schivati = 0;
 int punteggio = 0;
 bool game_over = false;
+
 
 struct Triangolo {
     float x, y;
@@ -40,22 +44,69 @@ std::vector<Triangolo> triangoli;
 
 float quadratoX = 0.0f;
 float quadratoY = -0.9f;
-const float quadratoWidth = 0.1f;
-const float quadratoHeight = 0.1f;
+const float quadratoWidth = 0.15f;
+const float quadratoHeight = 0.15f;
+
+int num_circles = 5;
+std::vector<float> circleVertices;
+float circleRadius = WINDOW_SIZE * 1.5;
+//float circleOffset = circleRadius / num_circles;
+
 
 GLfloat triangoloVertices[MAX_TRIANGOLI * 3 * (3 + 4)];
 
-
 GLuint quadratoVao, triangoloVao;
 GLuint quadratoVbo, triangoloVbo;
-GLuint circleVao, circleVbo;
+GLuint circleVao[MAX_NUM_CIRCLES], circleVbo[MAX_NUM_CIRCLES];
 
+void initCircles(int numero_circles)
+{
+    float circleOffset = circleRadius / numero_circles;
+    float yOffset = 1.0f; // Sposta i cerchi di 1 unità verso il basso
+    for (int i = numero_circles - 1; i >= 0; --i) {
+        float radius = circleRadius - i * circleOffset;
+        int numSegments = static_cast<int>(2 * M_PI * radius * 20);
+        float angleIncrement = 2 * M_PI / numSegments;
 
-const int NUM_CIRCLES = 5;
-const float WINDOW_SIZE = 2.0f;
-std::vector<float> circleVertices;
-float circleRadius = WINDOW_SIZE / 2.0f;
-float circleOffset = circleRadius / NUM_CIRCLES;
+        for (int j = 0; j < numSegments; ++j) {
+            float angle = j * angleIncrement;
+            float x = radius * cos(angle);
+            float y = radius * sin(angle) - yOffset;
+            float darkness = 1.0f - (static_cast<float>(i) / numero_circles); 
+            circleVertices.push_back(x);
+            circleVertices.push_back(y);
+            circleVertices.push_back(0.0f);
+            float r = 0.6f * darkness;
+            float g = 0.3f * darkness;
+            float b = 0.0f;
+            circleVertices.push_back(r);
+            circleVertices.push_back(g);
+            circleVertices.push_back(b);
+            circleVertices.push_back(1.0f);
+        }
+        glGenVertexArrays(1, &circleVao[i]);
+        glBindVertexArray(circleVao[i]);
+
+        glGenBuffers(1, &circleVbo[i]);
+        glBindBuffer(GL_ARRAY_BUFFER, circleVbo[i]);
+
+        // Aggiungi tutti gli elementi di circleVertices a V
+
+        glBufferData(GL_ARRAY_BUFFER, circleVertices.size() * sizeof(float), circleVertices.data(), GL_STATIC_DRAW);
+
+        // Configura l'attributo posizione
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        // Configura gli attributi per il colore e il buio
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
+
+        // Svuota il vettore circleVertices per il prossimo ciclo
+        circleVertices.clear();
+    }
+}
+
 
 Triangolo generaTriangolo()
 {
@@ -68,6 +119,11 @@ Triangolo generaTriangolo()
     width = std::max(width, TRIANGOLO_MIN_SIZE);
     direction = std::min(direction, TRIANGOLO_MAX_H_VELOCITY);
 
+    // Scegli una direzione positiva o negativa con il 50% di probabilità
+    if (rand() % 2 == 0) {
+        direction = -direction;
+    }
+
     float height = width * 2.0f; // Triangolo isoscele con la punta verso il basso
     float y = 1.0f + height; // Coordinate y al di sopra dello schermo
 
@@ -75,42 +131,60 @@ Triangolo generaTriangolo()
 }
 
 
-void generaTriangoli() {
+void generaTriangoli(int num_triangoli) 
+{
 
-    Triangolo T = generaTriangolo();
-    triangoli.push_back(T);
+    for (int i = 0; i < num_triangoli; i++)
+    {
+        Triangolo T = generaTriangolo();
+        triangoli.push_back(T);
 
-    // Aggiungi i dati del triangolo all'array di vertici
-    int index = (triangoli.size() - 1) * 3 * (3 + 4);
-    // Primo vertice
-    triangoloVertices[index + X] = T.x - T.width / 2;
-    triangoloVertices[index + Y] = T.y;
-    triangoloVertices[index + Z] = 0.0f;
-    // Imposta il colore del primo vertice a marrone chiaro (HEX #A18d6f ; RGB(161,141,111)
-    triangoloVertices[index + R] = 0.63f;
-    triangoloVertices[index + G] = 0.55f;
-    triangoloVertices[index + B] = 0.44f;
-    triangoloVertices[index + A] = 1.0f;
-    // Secondo vertice
-    index += (3 + 4);
-    triangoloVertices[index + X] = T.x + T.width / 2;
-    triangoloVertices[index + Y] = T.y;
-    triangoloVertices[index + Z] = 0.0f;
-    // Marrone più scuro HEX #836357; RGB(131,99,87)
-    triangoloVertices[index + R] = 0.51f;
-    triangoloVertices[index + G] = 0.39f;
-    triangoloVertices[index + B] = 0.44f;
-    triangoloVertices[index + A] = 1.0f;
-    // Terzo vertice
-    index += (3 + 4);
-    triangoloVertices[index + X] = T.x;
-    triangoloVertices[index + Y] = T.y - T.height;
-    triangoloVertices[index + Z] = 0.0f;
-    // Marrone più scuro HEX #634B47 RGB(99,75,71)
-    triangoloVertices[index + R] = 0.39f;
-    triangoloVertices[index + G] = 0.29f;
-    triangoloVertices[index + B] = 0.28f;
-    triangoloVertices[index + A] = 1.0f;
+        // Aggiungi i dati del triangolo all'array di vertici
+        int index = (triangoli.size() - 1) * 3 * (3 + 4);
+        // Primo vertice
+        triangoloVertices[index + X] = T.x - T.width / 2;
+        triangoloVertices[index + Y] = T.y;
+        triangoloVertices[index + Z] = 0.0f;
+        // Imposta il colore del primo vertice a marrone chiaro (HEX #A18d6f ; RGB(161,141,111)
+        triangoloVertices[index + R] = 0.63f;
+        triangoloVertices[index + G] = 0.55f;
+        triangoloVertices[index + B] = 0.44f;
+        triangoloVertices[index + A] = 1.0f;
+        // Secondo vertice
+        index += (3 + 4);
+        triangoloVertices[index + X] = T.x + T.width / 2;
+        triangoloVertices[index + Y] = T.y;
+        triangoloVertices[index + Z] = 0.0f;
+        // Marrone più scuro HEX #836357; RGB(131,99,87)
+        triangoloVertices[index + R] = 0.51f;
+        triangoloVertices[index + G] = 0.39f;
+        triangoloVertices[index + B] = 0.44f;
+        triangoloVertices[index + A] = 1.0f;
+        // Terzo vertice
+        index += (3 + 4);
+        triangoloVertices[index + X] = T.x;
+        triangoloVertices[index + Y] = T.y - T.height;
+        triangoloVertices[index + Z] = 0.0f;
+        // Marrone più scuro HEX #634B47 RGB(99,75,71)
+        triangoloVertices[index + R] = 0.39f;
+        triangoloVertices[index + G] = 0.29f;
+        triangoloVertices[index + B] = 0.28f;
+        triangoloVertices[index + A] = 1.0f;
+    }
+    // Inizializza il VAO e il VBO per i triangoli
+    glGenVertexArrays(1, &triangoloVao);
+    glBindVertexArray(triangoloVao);
+
+    glGenBuffers(1, &triangoloVbo);
+    glBindBuffer(GL_ARRAY_BUFFER, triangoloVbo);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangoloVertices), triangoloVertices, GL_DYNAMIC_DRAW);
+    // Configura l'attributo posizione
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // Configura l'attributo colore
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 }
 
 
@@ -123,6 +197,14 @@ void collisionDetection() {
         }
         else if (it->y < -1.0f) {
             punteggio += 10;
+            schivati += 1;
+
+            if ((schivati % 10 == 0) && (punteggio != 0))
+            {
+                num_circles = num_circles + 1 < MAX_NUM_CIRCLES ? num_circles + 1 : MAX_NUM_CIRCLES;
+                initCircles(num_circles);
+            }
+
             // Rimuovi il triangolo che ha oltrepassato il bordo inferiore
             it = triangoli.erase(it);
 
@@ -165,6 +247,7 @@ void update(int value) {
             collisionDetection();
         }
 
+
         if (punteggio >= winscore) {
             game_over = true;
             std::cout << "HAI VINTO!" << std::endl << "Punteggio finale : " << punteggio << std::endl;
@@ -205,40 +288,8 @@ void update(int value) {
 
 
 void initializeVaoVbo() {
-    for (int i = NUM_CIRCLES - 1; i >= 0; --i) {
-        float radius = circleRadius - i * circleOffset;
-        int numSegments = static_cast<int>(2 * M_PI * radius * 20);
-        float angleIncrement = 2 * M_PI / numSegments;
-
-        for (int j = 0; j < numSegments; ++j) {
-            float angle = j * angleIncrement;
-            float x = radius * cos(angle);
-            float y = radius * sin(angle);
-            float darkness = 1.0f - (static_cast<float>(i) / NUM_CIRCLES);  // Calcola il valore di buio in base all'indice i
-            circleVertices.push_back(x);
-            circleVertices.push_back(y);
-            circleVertices.push_back(0.0f);
-            circleVertices.push_back(darkness);
-            circleVertices.push_back(0.0f);
-            circleVertices.push_back(0.0f);
-            circleVertices.push_back(1.0f);
-        }
-    }
-    glGenVertexArrays(1, &circleVao);
-    glBindVertexArray(circleVao);
-
-    glGenBuffers(1, &circleVbo);
-    glBindBuffer(GL_ARRAY_BUFFER, circleVbo);
-    glBufferData(GL_ARRAY_BUFFER, circleVertices.size() * sizeof(float), circleVertices.data(), GL_STATIC_DRAW);
-
-    // Configura l'attributo posizione
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Configura gli attributi per il colore e il buio
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
+    
+    initCircles(num_circles);
 
     GLfloat quadratoVertices[] = {
         quadratoX, quadratoY, 0.0f,// vertice in basso a sinistra
@@ -269,24 +320,7 @@ void initializeVaoVbo() {
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-   
-    // Inizializza il VAO e il VBO per i triangoli
-    glGenVertexArrays(1, &triangoloVao);
-    glBindVertexArray(triangoloVao);
-
-    glGenBuffers(1, &triangoloVbo);
-    glBindBuffer(GL_ARRAY_BUFFER, triangoloVbo);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(triangoloVertices), triangoloVertices, GL_DYNAMIC_DRAW);
-    // Configura l'attributo posizione
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // Configura l'attributo colore
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    //set background color
-    //glClearColor(1.0, 0.5, 0.0, 1.0);
+    generaTriangoli(MAX_TRIANGOLI);
 }
 
 
@@ -298,11 +332,15 @@ void display() {
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
 
-        glBindVertexArray(circleVao);
-        for (int i = 0; i < NUM_CIRCLES; ++i) {
-            int offset = i * static_cast<int>(2 * M_PI * (circleRadius - i * circleOffset) * 20);
-            int numSegments = static_cast<int>(2 * M_PI * (circleRadius - i * circleOffset) * 20);
-            glDrawArrays(GL_LINE_LOOP, offset, numSegments);
+
+        for (int i = 0; i < num_circles; ++i) {
+            glBindVertexArray(circleVao[i]);
+
+            // Calcola il numero di segmenti per questo cerchio
+            int numSegments = static_cast<int>(2 * M_PI * (circleRadius - i * (circleRadius / num_circles)) * 20);
+
+            // Disegna il cerchio
+            glDrawArrays(GL_TRIANGLE_FAN, 0, numSegments);
         }
 
 
@@ -397,9 +435,7 @@ int main(int argc, char** argv) {
     glutTimerFunc(0, update, 0);
 
     srand(static_cast<unsigned int>(time(0)));
-    for (int i = 0; i < MAX_TRIANGOLI; ++i) {
-        generaTriangoli();
-    }
+
 
     glutMainLoop();
     return 0;

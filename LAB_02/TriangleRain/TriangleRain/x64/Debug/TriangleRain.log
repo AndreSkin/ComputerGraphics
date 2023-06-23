@@ -1,7 +1,5 @@
 ﻿  TriangleRain.cpp
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(65,21): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(84,15): warning C4267: 'inizializzazione': conversione da 'size_t' a 'int'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(211,30): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-  LINK : C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\x64\Debug\TriangleRain.exe non trovato o non compilato dall'ultimo collegamento incrementale; verrà eseguito il collegamento completo
-glew32sd.lib(glew.obj) : warning LNK4099: impossibile trovare il PDB '' con 'glew32sd.lib(glew.obj)' o in ''; oggetto collegato senza informazioni di debug
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(69,30): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(116,21): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\TriangleRain\TriangleRain.cpp(143,19): warning C4267: 'inizializzazione': conversione da 'size_t' a 'int'. Possibile perdita di dati.
   TriangleRain.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_02\TriangleRain\x64\Debug\TriangleRain.exe
