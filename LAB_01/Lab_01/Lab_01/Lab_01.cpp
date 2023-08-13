@@ -28,32 +28,32 @@
 
 static unsigned int programId;
 
-unsigned int VAO;
-unsigned int VBO;
+unsigned int control_poly_VAO;
+unsigned int control_poly_VBO;
 
-unsigned int VAO_2;
-unsigned int VBO_2;
-unsigned int VAO_3;
-unsigned int VBO_3;
-unsigned int VAO_4;
-unsigned int VBO_4;
+unsigned int bezier_VAO;
+unsigned int bezier_VBO;
+unsigned int catmull_VAO;
+unsigned int catmull_VBO;
+unsigned int catmull_internal_VAO;
+unsigned int catmull_internal_VBO;
 
 using namespace glm;
 
 #define MaxNumPts 300
 float PointArray[MaxNumPts][2];
 float catmull_rom_points[MaxNumPts][2];
-float CurveArray[MaxNumPts][2];
-float interp_curve[MaxNumPts * 10][2];
+float bezier_curve[MaxNumPts][2];
+float catmull_curve[MaxNumPts * 10][2];
 
 bool trascinamento = false;
 float tolleranza_trascinamento = 0.1;
 
-bool show_points = false;
-bool show_line = false;
+bool show_catmull_points = false;
+bool show_segments = false;
 
 int NumPts = 0;
-int pointsToDraw = 50;
+int catmull_pointsToDraw = 50;
 
 // Window size in pixels
 int		width = 500;
@@ -70,7 +70,7 @@ void DragPoint(int x, int y);
 void catmull_rom(float t, float* result_2, int y);
 
 
-void decasteljau(float t, float* result)
+void decasteljau(float t, float* bezier_result)
 {
 	float array_bezier[MaxNumPts][MaxNumPts][2];
 	//Copio pointarray
@@ -81,56 +81,63 @@ void decasteljau(float t, float* result)
 
 	//Applico l'algoritmo
 	for (int i = 1; i < NumPts; i++) {
-		for (int j = 0; j < NumPts -i; j++) {
+		for (int j = 0; j < NumPts - i; j++) {
 			array_bezier[i][j][0] = ((1 - t) * array_bezier[i - 1][j][0]) + (t * array_bezier[i - 1][j + 1][0]);
 			array_bezier[i][j][1] = ((1 - t) * array_bezier[i - 1][j][1]) + (t * array_bezier[i - 1][j + 1][1]);
 		}
 		
 	}
 	//Salvo i risultati
-	result[0] = array_bezier[NumPts - 1][0][0];
-	result[1] = array_bezier[NumPts - 1][0][1];
+	bezier_result[0] = array_bezier[NumPts - 1][0][0];
+	bezier_result[1] = array_bezier[NumPts - 1][0][1];
 }
 
-void catmull_rom(float t, float* result_2, int y) 
+void catmull_rom(float t, float* catmull_result, int catmull_point_index)
 {
-	float CurveArray_catmull_rom[MaxNumPts][MaxNumPts][2];
-	CurveArray_catmull_rom[0][0][0] = PointArray[y][0]; //punto 1
-	CurveArray_catmull_rom[0][0][1] = PointArray[y][1];
+	// Crea un array per memorizzare i punti intermedi
+	float catmull_curve_points[MaxNumPts][MaxNumPts][2];
 
-	float m_x = (PointArray[y + 1][0] - PointArray[y - 1][0]) / 2;
-	float m_y = (PointArray[y + 1][1] - PointArray[y - 1][1]) / 2;
-	CurveArray_catmull_rom[0][1][0] = PointArray[y][0] + (m_x / 3); //punto 2
-	CurveArray_catmull_rom[0][1][1] = PointArray[y][1] + (m_y / 3);
-	//sopra i primi due punti, sotto il 3 e 4
+	// Imposta il primo punto di controllo (P_i)
+	catmull_curve_points[0][0][0] = PointArray[catmull_point_index][0];
+	catmull_curve_points[0][0][1] = PointArray[catmull_point_index][1];	
+	
+	// Imposta il quarto punto di controllo (P_{i + 1})
+	catmull_curve_points[0][3][0] = PointArray[catmull_point_index + 1][0];
+	catmull_curve_points[0][3][1] = PointArray[catmull_point_index + 1][1];
 
-	CurveArray_catmull_rom[0][3][0] = PointArray[y + 1][0]; // punto 4
-	CurveArray_catmull_rom[0][3][1] = PointArray[y + 1][1];
+	// Calcola il secondo punto di controllo (P+)
+	//Stima della derivata
+	float m_x = (PointArray[catmull_point_index + 1][0] - PointArray[catmull_point_index - 1][0]) / 2;
+	float m_y = (PointArray[catmull_point_index + 1][1] - PointArray[catmull_point_index - 1][1]) / 2;
+	catmull_curve_points[0][1][0] = PointArray[catmull_point_index][0] + (m_x / 3);
+	catmull_curve_points[0][1][1] = PointArray[catmull_point_index][1] + (m_y / 3);
 
-	m_x = (PointArray[y + 1][0] - PointArray[y][0]) / 2; // inizio punto 3
-	m_y = (PointArray[y + 1][1] - PointArray[y][1]) / 2;
-	if (y != NumPts - 1) {
-		m_x = (PointArray[y + 2][0] - PointArray[y][0]) / 2;
-		m_y = (PointArray[y + 2][1] - PointArray[y][1]) / 2;
+	// Calcola il terzo punto di controllo (P-)
+	m_x = (PointArray[catmull_point_index + 1][0] - PointArray[catmull_point_index][0]) / 2;
+	m_y = (PointArray[catmull_point_index + 1][1] - PointArray[catmull_point_index][1]) / 2;
+	if (catmull_point_index != NumPts - 1) //Non l'ultimo punto
+	{
+		m_x = (PointArray[catmull_point_index + 2][0] - PointArray[catmull_point_index][0]) / 2;
+		m_y = (PointArray[catmull_point_index + 2][1] - PointArray[catmull_point_index][1]) / 2;
 	}
+	catmull_curve_points[0][2][0] = PointArray[catmull_point_index + 1][0] - (m_x / 3);
+	catmull_curve_points[0][2][1] = PointArray[catmull_point_index + 1][1] - (m_y / 3);
 
-	CurveArray_catmull_rom[0][2][0] = PointArray[y + 1][0] - (m_x / 3); // punto 3
-	CurveArray_catmull_rom[0][2][1] = PointArray[y + 1][1] - (m_y / 3);
-
-	for (int i = 1; i < 4; i++) { //bezier applicato ai 4 punti di controllo
+	// Applica l'algoritmo di De Casteljau ai quattro punti di controllo per calcolare il punto sulla curva di Catmull-Rom
+	for (int i = 1; i < 4; i++) {
 		for (int j = 0; j < (4 - i); j++) {
-			CurveArray_catmull_rom[i][j][0] = ((1 - t) * CurveArray_catmull_rom[i - 1][j][0]) + (t * CurveArray_catmull_rom[i - 1][j + 1][0]);
-			CurveArray_catmull_rom[i][j][1] = ((1 - t) * CurveArray_catmull_rom[i - 1][j][1]) + (t * CurveArray_catmull_rom[i - 1][j + 1][1]);
+			catmull_curve_points[i][j][0] = ((1 - t) * catmull_curve_points[i - 1][j][0]) + (t * catmull_curve_points[i - 1][j + 1][0]);
+			catmull_curve_points[i][j][1] = ((1 - t) * catmull_curve_points[i - 1][j][1]) + (t * catmull_curve_points[i - 1][j + 1][1]);
 		}
-
 	}
 
-	catmull_rom_points[y * 2][0] = CurveArray_catmull_rom[0][1][0];
-	catmull_rom_points[y * 2][1] = CurveArray_catmull_rom[0][1][1];
-	catmull_rom_points[(y * 2) + 1][0] = CurveArray_catmull_rom[0][2][0];
-	catmull_rom_points[(y * 2) + 1][1] = CurveArray_catmull_rom[0][2][1];
-	result_2[0] = CurveArray_catmull_rom[3][0][0];
-	result_2[1] = CurveArray_catmull_rom[3][0][1];
+	// Salva i risultati
+	catmull_rom_points[catmull_point_index * 2][0] = catmull_curve_points[0][1][0];
+	catmull_rom_points[catmull_point_index * 2][1] = catmull_curve_points[0][1][1];
+	catmull_rom_points[(catmull_point_index * 2) + 1][0] = catmull_curve_points[0][2][0];
+	catmull_rom_points[(catmull_point_index * 2) + 1][1] = catmull_curve_points[0][2][1];
+	catmull_result[0] = catmull_curve_points[3][0][0];
+	catmull_result[1] = catmull_curve_points[3][0][1];
 }
 
 
@@ -150,6 +157,7 @@ void DragPoint(int x, int y)
 {
 	if (trascinamento) 
 	{
+		//Normalizza coordinate
 		float xPos = -1.0f + ((float)x) * 2 / ((float)(width));
 		float yPos = -1.0f + ((float)(height - y)) * 2 / ((float)(height));
 
@@ -181,11 +189,11 @@ void myKeyboardFunc(unsigned char key, int x, int y)
 		glutPostRedisplay();
 		break;
 	case 'v':
-		show_points = !show_points;
+		show_catmull_points = !show_catmull_points;
 		glutPostRedisplay();
 		break;
 	case 's':
-		show_line = !show_line;
+		show_segments = !show_segments;
 		glutPostRedisplay();
 		break;
 	case 27:			// Escape key
@@ -279,27 +287,27 @@ void initShader(void)
 void init(void)
 {
 	// VAO for control polygon
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glGenVertexArrays(1, &control_poly_VAO);
+	glBindVertexArray(control_poly_VAO);
+	glGenBuffers(1, &control_poly_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, control_poly_VBO);
 	// VAO for bezier curve
-	glGenVertexArrays(1, &VAO_2);
-	glBindVertexArray(VAO_2);
-	glGenBuffers(1, &VBO_2);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
+	glGenVertexArrays(1, &bezier_VAO);
+	glBindVertexArray(bezier_VAO);
+	glGenBuffers(1, &bezier_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, bezier_VBO);
 
 	// VAO for second curve catmull_rom
-	glGenVertexArrays(1, &VAO_3);
-	glBindVertexArray(VAO_3);
-	glGenBuffers(1, &VBO_3);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_3);
+	glGenVertexArrays(1, &catmull_VAO);
+	glBindVertexArray(catmull_VAO);
+	glGenBuffers(1, &catmull_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, catmull_VBO);
 
 	// punti del 5.A punti interni
-	glGenVertexArrays(1, &VAO_4);
-	glBindVertexArray(VAO_4);
-	glGenBuffers(1, &VBO_4);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_4);
+	glGenVertexArrays(1, &catmull_internal_VAO);
+	glBindVertexArray(catmull_internal_VAO);
+	glGenBuffers(1, &catmull_internal_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, catmull_internal_VBO);
 
 	// Background color
 	glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -312,17 +320,17 @@ void drawScene(void)
 
 	if (NumPts > 2) 
 	{
-		float result[2];
+		float bezier_result[2];
 		for (int i = 0; i <= 100; i++) {
-			decasteljau((GLfloat)i / 100, result);
-			CurveArray[i][0] = result[0];
-			CurveArray[i][1] = result[1];
+			decasteljau((GLfloat)i / 100, bezier_result);
+			bezier_curve[i][0] = bezier_result[0];
+			bezier_curve[i][1] = bezier_result[1];
 		}
 
 
-		glBindVertexArray(VAO_2);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(CurveArray), &CurveArray[0], GL_STATIC_DRAW);
+		glBindVertexArray(bezier_VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, bezier_VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_curve), &bezier_curve[0], GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 		glLineWidth(2.0);
@@ -333,32 +341,32 @@ void drawScene(void)
 	// punto 5.A
 	if (NumPts > 2) {
 
-		float result_2[2];
+		float catmull_result[2];
 		int i = 0;
 
-		for (int y = 0; y < NumPts - 1; y++) {
-			for (i; i <= (pointsToDraw + (pointsToDraw * y)); i++) {
-				catmull_rom((((GLfloat)i - (pointsToDraw * y)) / pointsToDraw), result_2, y);
-				interp_curve[i][0] = result_2[0];
-				interp_curve[i][1] = result_2[1];
+		for (int catmull_point_index = 0; catmull_point_index < NumPts - 1; catmull_point_index++) {
+			for (i; i <= (catmull_pointsToDraw + (catmull_pointsToDraw * catmull_point_index)); i++) {
+				catmull_rom((((GLfloat)i - (catmull_pointsToDraw * catmull_point_index)) / catmull_pointsToDraw), catmull_result, catmull_point_index);
+				catmull_curve[i][0] = catmull_result[0];
+				catmull_curve[i][1] = catmull_result[1];
 			}
 		}
 
-		glBindVertexArray(VAO_3);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO_3);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(interp_curve), &interp_curve[0], GL_STATIC_DRAW);
+		glBindVertexArray(catmull_VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, catmull_VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(catmull_curve), &catmull_curve[0], GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 		glLineWidth(1.0);
-		glDrawArrays(GL_LINE_STRIP, 0, (pointsToDraw * (NumPts - 1)) +1);
+		glDrawArrays(GL_LINE_STRIP, 0, (catmull_pointsToDraw * (NumPts - 1)) +1);
 
 		glBindVertexArray(0);
 	}
 
-	if ((NumPts > 3) && (show_points == true)) {
+	if ((NumPts > 3) && (show_catmull_points == true)) {
 
-		glBindVertexArray(VAO_4);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO_4);
+		glBindVertexArray(catmull_internal_VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, catmull_internal_VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(catmull_rom_points), &catmull_rom_points[0], GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
@@ -371,17 +379,17 @@ void drawScene(void)
 
 
 	// Draw control polygon
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindVertexArray(control_poly_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, control_poly_VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(PointArray), &PointArray[0], GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// Draw the control points CP
 	glPointSize(6.0);
 	glDrawArrays(GL_POINTS, 0, NumPts);
+	
 	// Draw the line segments between CP
-
-	if (show_line)
+	if (show_segments)
 	{
 		glLineWidth(1.0);
 		glDrawArrays(GL_LINE_STRIP, 0, NumPts);
@@ -411,7 +419,7 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(myKeyboardFunc);
 	glutMouseFunc(myMouseFunc);
 
-	//aggiunti per il dragging, il primo serve a muovere, il secondo serve a verificare e settare un bool a true
+	//Dragging
 	glutMotionFunc(DragPoint);
 	glutPassiveMotionFunc(Point_is_dragged);
 

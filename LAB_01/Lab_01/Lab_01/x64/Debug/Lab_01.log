@@ -1,5 +1,3 @@
 ﻿  Lab_01.cpp
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_01\Lab_01\Lab_01\Lab_01.cpp(50,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-  ShaderMaker.cpp
-  Generazione del codice in corso...
+C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_01\Lab_01\Lab_01\Lab_01.cpp(50,32): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
   Lab_01.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_01\Lab_01\x64\Debug\Lab_01.exe
