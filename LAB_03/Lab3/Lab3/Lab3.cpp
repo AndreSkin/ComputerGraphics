@@ -335,7 +335,7 @@ void init_bunny() {
 	// Object Setup use the light shader and a material for color and light behavior
 	Object obj7 = {};
 	obj7.mesh = sphereS;
-	obj7.material = MaterialType::MY_MATERIAL; // NO_MATERIAL;
+	obj7.material = MaterialType::RED_PLASTIC;
 	obj7.shading = ShadingType::PHONG; // GOURAUD; // TOON;
 	obj7.name = "Bunny";
 	obj7.M = glm::scale(glm::translate(glm::mat4(1), glm::vec3(0., 5., -2.)), glm::vec3(2., 2., 2.));

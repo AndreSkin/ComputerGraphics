@@ -1,20 +1,4 @@
-﻿  HUD_Logger.cpp
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(16,19): warning C4244: 'argomento': conversione da 'int' a 'GLfloat'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(16,16): warning C4244: 'argomento': conversione da 'int' a 'GLfloat'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(36,37): warning C4244: 'inizializzazione': conversione da 'GLfloat' a 'int'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(43,28): warning C4244: 'argomento': conversione da 'double' a 'GLfloat'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(44,18): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(44,13): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(47,33): warning C4244: 'argomento': conversione da 'double' a 'int'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(47,28): warning C4244: 'argomento': conversione da 'double' a 'int'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(47,23): warning C4244: 'argomento': conversione da 'double' a 'int'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(50,28): warning C4244: 'argomento': conversione da 'double' a 'GLfloat'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(51,18): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(51,13): warning C4305: 'argomento': troncamento da 'double' a 'GLfloat'
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(54,33): warning C4244: 'argomento': conversione da 'double' a 'int'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(54,28): warning C4244: 'argomento': conversione da 'double' a 'int'. Possibile perdita di dati.
-C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\HUD_Logger.cpp(54,23): warning C4244: 'argomento': conversione da 'double' a 'int'. Possibile perdita di dati.
-  Lab3.cpp
+﻿  Lab3.cpp
 C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(428,53): warning C4244: '=': conversione da 'GLint' a 'GLfloat'. Possibile perdita di dati.
 C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(593,25): warning C4305: 'argomento': troncamento da 'double' a 'GLclampf'
 C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(593,20): warning C4305: 'argomento': troncamento da 'double' a 'GLclampf'
@@ -37,6 +21,4 @@ C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(947,19): w
           ]
 C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(1204,55): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
 C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\Lab3\Lab3.cpp(1213,55): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-  ShaderMaker.cpp
-  Generazione del codice in corso...
   Lab3.vcxproj -> C:\Users\schin\Desktop\UNI\ComputerGraphics\LAB_03\Lab3\x64\Debug\Lab3.exe

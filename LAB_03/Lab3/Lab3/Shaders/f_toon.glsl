@@ -47,17 +47,20 @@ void main() {
 	vec3 shade_buffer = ambient + diffuse;
 	vec3 result_buffer;
 	
-	if (intensity > 0.95){
+		if (intensity > 0.90){
 		result_buffer = vec3(shade_buffer[0],shade_buffer[1],shade_buffer[2]);
 	}
-	else if (intensity > 0.6){
+	else if (intensity > 0.50){
+		result_buffer = vec3(shade_buffer[0] - 0.1, shade_buffer[1] - 0.1, shade_buffer[2] - 0.1);
+	}
+	else if (intensity > 0.30){
 		result_buffer = vec3(shade_buffer[0] - 0.2, shade_buffer[1] - 0.2, shade_buffer[2] - 0.2);
 	}
-	else if (intensity > 0.35){
-		result_buffer = vec3(shade_buffer[0] - 0.4, shade_buffer[1] - 0.4, shade_buffer[2] - 0.4);
+	else if (intensity > 0.20){
+		result_buffer = vec3(shade_buffer[0] - 0.3, shade_buffer[1] - 0.3, shade_buffer[2] - 0.3);
 	}
-	else{
-		result_buffer = vec3(shade_buffer[0] - 0.6, shade_buffer[1] - 0.6, shade_buffer[2] - 0.6);
+	else if (intensity > 0.10){
+		result_buffer = vec3(shade_buffer[0] - 0.4, shade_buffer[1] - 0.4, shade_buffer[2] - 0.4);
 	}
 	
     vec3 result = result_buffer;
