@@ -9,8 +9,7 @@
 #include "sphere.h"
 
 // casts a single ray through the scene geometry and finds the closest hit
-bool
-RayTracer::CastRay (Ray & ray, Hit & h, bool use_sphere_patches) const
+bool RayTracer::CastRay (Ray & ray, Hit & h, bool use_sphere_patches) const
 {
   bool answer = false;
   Hit nearest;
@@ -66,10 +65,8 @@ RayTracer::CastRay (Ray & ray, Hit & h, bool use_sphere_patches) const
   return answer;
 }
 
-Vec3f
-RayTracer::TraceRay (Ray & ray, Hit & hit, int bounce_count) const
+Vec3f RayTracer::TraceRay (Ray & ray, Hit & hit, int bounce_count) const
 {
-
   hit = Hit ();
   bool intersect = CastRay (ray, hit, false);
 
@@ -134,7 +131,7 @@ RayTracer::TraceRay (Ray & ray, Hit & hit, int bounce_count) const
 		  int hMAX = 200;
 		  for (int h = 0; h < hMAX; h++) {
 			  new_hit = new Hit();
-			  pointOnLight = f->RandomPoint();			//scelta casuale di un punto nell'area della luce
+			  pointOnLight = f->RandomPoint(); //scelta casuale di un punto nell'area della luce
 			  dirToLight = pointOnLight - point;
 			  dirToLight.Normalize();
 			  n_ray = new Ray(point, dirToLight);
